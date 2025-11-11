@@ -12,14 +12,14 @@ app = ["py.typed"]
 [project]
 name = "glancewatch"
 version = "1.0.0"
-description = "Lightweight monitoring adapter for Glances + Uptime Kuma"
+description = "Lightweight monitoring adapter bridging Glances metrics with Uptime Kuma"
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
-    {name = "GlanceWatch Contributors"}
+    {name = "Collins Kramp", email = "collinskramp@gmail.com"}
 ]
-keywords = ["monitoring", "glances", "uptime-kuma", "fastapi", "metrics"]
+keywords = ["monitoring", "glances", "uptime-kuma", "metrics", "system-monitoring", "server-monitoring"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: System Administrators",
@@ -30,8 +30,9 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "Framework :: FastAPI",
     "Topic :: System :: Monitoring",
+    "Topic :: System :: Systems Administration",
+    "Framework :: FastAPI",
 ]
 dependencies = [
     "fastapi>=0.109.0",
@@ -59,8 +60,9 @@ dev = [
 [project.urls]
 Homepage = "https://github.com/collinskramp/glancewatch"
 Documentation = "https://github.com/collinskramp/glancewatch#readme"
-Repository = "https://github.com/collinskramp/glancewatch.git"
+Repository = "https://github.com/collinskramp/glancewatch"
 Issues = "https://github.com/collinskramp/glancewatch/issues"
+Changelog = "https://github.com/collinskramp/glancewatch/releases"
 
 [tool.black]
 line-length = 100

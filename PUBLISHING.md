@@ -1,231 +1,138 @@
 # Publishing GlanceWatch to PyPI
 
+Complete guide for publishing GlanceWatch to the Python Package Index (PyPI).
+
 ## Prerequisites
 
-1. **PyPI account**: Create accounts on:
-   - https://test.pypi.org (for testing)
-   - https://pypi.org (for production)
+### 1. Create PyPI Account
 
-2. **Install build tools**:
-   ```bash
-   pip install --upgrade build twine
-   ```
+1. Go to https://pypi.org/account/register/
+2. Create an account and verify your email
+3. Enable 2FA (Two-Factor Authentication) - **required for new projects**
 
-3. **API tokens**: Generate API tokens from PyPI/TestPyPI account settings
+### 2. Generate API Token
 
-## Building the Package
+1. Log in to PyPI
+2. Go to https://pypi.org/manage/account/token/
+3. Click **"Add API token"**
+4. Name: `glancewatch-upload`
+5. Scope: "Entire account" (change to project-specific after first upload)
+6. **Copy the token** - you won't see it again!
 
-### 1. Update Version
+### 3. Configure ~/.pypirc
 
-Edit `pyproject.toml` and update the version:
+Create or edit `~/.pypirc`:
 
-```toml
-[project]
-name = "glancewatch"
-version = "1.0.1"  # <-- Update this
-```
-
-### 2. Build Distribution
-
-```bash
-# Clean previous builds
-rm -rf dist/ build/ *.egg-info
-
-# Build the package
-python3 -m build
-```
-
-This creates:
-- `dist/glancewatch-1.0.0-py3-none-any.whl` (wheel distribution)
-- `dist/glancewatch-1.0.0.tar.gz` (source distribution)
-
-### 3. Check the Package
-
-```bash
-# Verify the build
-twine check dist/*
-```
-
-Should output:
-```
-Checking dist/glancewatch-1.0.0-py3-none-any.whl: PASSED
-Checking dist/glancewatch-1.0.0.tar.gz: PASSED
-```
-
-## Testing on TestPyPI
-
-Always test on TestPyPI before publishing to production PyPI:
-
-### 1. Upload to TestPyPI
-
-```bash
-twine upload --repository testpypi dist/*
-```
-
-Enter your TestPyPI username and API token when prompted.
-
-### 2. Test Install
-
-```bash
-# Create a test environment
-python3 -m venv test-env
-source test-env/bin/activate
-
-# Install from TestPyPI
-pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ glancewatch
-
-# Test the command
-glancewatch --help
-
-# Clean up
-deactivate
-rm -rf test-env
-```
-
-## Publishing to PyPI
-
-Once tested on TestPyPI:
-
-```bash
-twine upload dist/*
-```
-
-Enter your PyPI username and API token.
-
-## Post-Publishing
-
-### 1. Verify Installation
-
-```bash
-# Install from PyPI
-pip install glancewatch
-
-# Test
-glancewatch
-```
-
-### 2. Tag the Release
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-### 3. Create GitHub Release
-
-Go to https://github.com/collinskramp/glancewatch/releases/new
-
-- Tag: `v1.0.0`
-- Title: `GlanceWatch v1.0.0`
-- Description: Release notes and changelog
-- Attach: dist files (optional)
-
-## Using API Tokens
-
-Instead of username/password, use API tokens:
-
-### Create .pypirc
-
-```bash
-cat > ~/.pypirc << 'EOF'
-[distutils]
-index-servers =
-    pypi
-    testpypi
-
+```ini
 [pypi]
 username = __token__
-password = pypi-your-api-token-here
+password = pypi-AgEIcHlwaS5vcmc...YOUR_TOKEN_HERE
+```
 
-[testpypi]
-repository = https://test.pypi.org/legacy/
-username = __token__
-password = pypi-your-testpypi-token-here
-EOF
-
+Set correct permissions:
+```bash
 chmod 600 ~/.pypirc
 ```
 
-Now you can upload without entering credentials:
+## Pre-Publication Checklist
+
+Before publishing, verify:
+
+- [ ] Version number updated in `pyproject.toml`
+- [ ] `README.md` is complete and accurate
+- [ ] `LICENSE` file exists (MIT)
+- [ ] Email in `pyproject.toml` is correct
+- [ ] All tests pass: `pytest`
+- [ ] Git repo is clean: `git status`
+- [ ] Latest changes are committed and pushed
+
+## Quick Publish (Using Script)
+
+We provide a convenience script that handles everything:
 
 ```bash
-twine upload --repository testpypi dist/*
-twine upload dist/*
+# Make it executable (first time only)
+chmod +x publish.sh
+
+# Run it
+./publish.sh
 ```
 
-## Automated Publishing with GitHub Actions
+The script will:
+1. Clean old builds
+2. Build the package
+3. Check for issues
+4. Show what will be uploaded
+5. Prompt for confirmation
+6. Upload to PyPI
 
-Create `.github/workflows/publish.yml`:
+## Manual Publishing Steps
 
-```yaml
-name: Publish to PyPI
-
-on:
-  release:
-    types: [published]
-
-jobs:
-  publish:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-      
-      - name: Install build tools
-        run: |
-          python -m pip install --upgrade pip
-          pip install build twine
-      
-      - name: Build package
-        run: python -m build
-      
-      - name: Publish to PyPI
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: twine upload dist/*
-```
-
-Add `PYPI_API_TOKEN` to repository secrets:
-1. Go to Settings → Secrets and variables → Actions
-2. Click "New repository secret"
-3. Name: `PYPI_API_TOKEN`
-4. Value: Your PyPI API token
-
-Now whenever you create a GitHub release, it will automatically publish to PyPI!
-
-## Version Bumping Strategy
-
-Follow semantic versioning (https://semver.org/):
-
-- **MAJOR** (1.0.0 → 2.0.0): Breaking changes
-- **MINOR** (1.0.0 → 1.1.0): New features, backward compatible
-- **PATCH** (1.0.0 → 1.0.1): Bug fixes
-
-Example workflow:
+### Step 1: Install Build Tools
 
 ```bash
-# Bump version in pyproject.toml
-vim pyproject.toml
+pip install --upgrade build twine
+```
 
-# Commit
-git add pyproject.toml
-git commit -m "Bump version to 1.0.1"
+### Step 2: Test Locally First
 
-# Tag
-git tag v1.0.1
-git push origin main --tags
+```bash
+# Install locally in development mode
+pip install -e .
 
-# Build and publish
-rm -rf dist/
+# Test the CLI
+glancewatch --help
+
+# Test it works
+glancewatch
+```
+
+### Step 3: Build the Package
+
+```bash
+# Clean old builds
+rm -rf dist/ build/ *.egg-info
+
+# Build
 python3 -m build
+
+# Verify contents
+ls -lh dist/
+# Should show: glancewatch-1.0.0-py3-none-any.whl and glancewatch-1.0.0.tar.gz
+```
+
+### Step 4: Check Package Quality
+
+```bash
+# Check package for common issues
 twine check dist/*
+
+# Should output: Checking dist/... PASSED
+```
+
+### Step 5: Upload to PyPI
+
+```bash
+# Upload to PyPI
 twine upload dist/*
 ```
+
+You'll be prompted for credentials (use `__token__` as username and your API token as password, or use `~/.pypirc`).
+
+### Step 6: Verify Publication
+
+```bash
+# Wait a minute for PyPI to index
+
+# Install from PyPI
+pip install glancewatch
+
+# Test it
+glancewatch --help
+glancewatch
+```
+
+Visit https://pypi.org/project/glancewatch/ to see your published package!
 
 ## Troubleshooting
 

@@ -30,7 +30,7 @@ glances -w
 ### 3. Install GlanceWatch
 
 ```bash
-# Install from PyPI (when published)
+# Install from PyPI
 pip install glancewatch
 
 # Or install from source

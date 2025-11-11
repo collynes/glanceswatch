@@ -65,7 +65,7 @@ fi
 # Install GlanceWatch
 echo ""
 echo "📦 Installing GlanceWatch..."
-pip3 install --user git+https://github.com/collinskramp/glancewatch.git
+pip3 install --user glancewatch
 echo "✓ GlanceWatch installed"
 
 # Get the installation path

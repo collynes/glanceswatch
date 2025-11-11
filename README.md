@@ -20,7 +20,7 @@
 
 ## 🚀 Quick Start
 
-**Only requirement: Glances must be installed and running**
+**Prerequisites: Glances must be installed and running**
 
 ### One-Line Install (Ubuntu/Debian)
 
@@ -35,22 +35,24 @@ This installs Glances, GlanceWatch, and sets up systemd services automatically!
 #### 1. Install and Start Glances
 
 ```bash
-# Install Glances
-sudo apt install -y glances   # Ubuntu/Debian
-# or: pip install glances
+# Ubuntu/Debian
+sudo apt install -y glances
+glances -w
 
-# Start Glances API server
+# macOS
+brew install glances
+glances -w
+
+# Or via pip
+pip install glances
 glances -w
 ```
 
 #### 2. Install GlanceWatch
 
 ```bash
-# From GitHub (until published to PyPI)
-pip install git+https://github.com/collinskramp/glancewatch.git
-
-# When published to PyPI:
-# pip install glancewatch
+# Install from PyPI
+pip install glancewatch
 ```
 
 #### 3. Run GlanceWatch
@@ -61,11 +63,12 @@ glancewatch
 
 That's it! 🎉
 
+**Access the dashboard:**
 - **Web UI**: http://localhost:8000/configure/
 - **API Docs**: http://localhost:8000/docs
 - **Status Endpoint**: http://localhost:8000/status
 
-**See [INSTALL.md](INSTALL.md) for detailed installation instructions, systemd service setup, and more.**
+**See [INSTALL.md](INSTALL.md) for detailed instructions, systemd setup, and troubleshooting.**
 
 ## 📡 API Endpoints
 
