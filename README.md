@@ -22,7 +22,17 @@
 
 **Only requirement: Glances must be installed and running**
 
-### 1. Install and Start Glances
+### One-Line Install (Ubuntu/Debian)
+
+```bash
+curl -sSL https://raw.githubusercontent.com/collinskramp/glancewatch/main/install-pip.sh | bash
+```
+
+This installs Glances, GlanceWatch, and sets up systemd services automatically!
+
+### Manual Installation
+
+#### 1. Install and Start Glances
 
 ```bash
 # Install Glances
@@ -33,17 +43,17 @@ sudo apt install -y glances   # Ubuntu/Debian
 glances -w
 ```
 
-### 2. Install GlanceWatch
+#### 2. Install GlanceWatch
 
 ```bash
-# From PyPI (when published)
-pip install glancewatch
-
-# Or from GitHub
+# From GitHub (until published to PyPI)
 pip install git+https://github.com/collinskramp/glancewatch.git
+
+# When published to PyPI:
+# pip install glancewatch
 ```
 
-### 3. Run GlanceWatch
+#### 3. Run GlanceWatch
 
 ```bash
 glancewatch
