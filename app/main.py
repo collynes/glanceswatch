@@ -127,14 +127,16 @@ async def get_status(request: Request):
     Get overall system status for all metrics.
     
     Returns combined RAM, CPU, and disk status with overall ok/not-ok status.
+    Returns HTTP 503 when any threshold is exceeded (for Uptime Kuma alerting).
     """
     try:
         async with GlancesMonitor(app_config) as monitor:
             result = await monitor.check_status()
             
-            if not result.ok and app_config.return_http_on_failure:
+            # Return HTTP 503 when thresholds are exceeded
+            if not result.ok:
                 return JSONResponse(
-                    status_code=app_config.return_http_on_failure,
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                     content=result.model_dump()
                 )
             
