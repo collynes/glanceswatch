@@ -1,0 +1,10 @@
+include README.md
+include LICENSE
+include requirements.txt
+include requirements-dev.txt
+include QUICKSTART.md
+include QUICKSTART-UBUNTU.md
+recursive-include ui *.html
+recursive-include app *.py
+global-exclude __pycache__
+global-exclude *.py[co]
