@@ -1,67 +1,61 @@
 # GlanceWatch 🎯
 
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109+-green.svg)](https://fastapi.tiangolo.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**GlanceWatch** is a lightweight monitoring adapter that bridges [Glances](https://nicolargo.github.io/glances/) system metrics with [Uptime Kuma](https://github.com/louislam/uptime-kuma) (and other monitoring tools). It exposes simple boolean JSON endpoints that answer the question: *"Is my system healthy?"*
+**GlanceWatch** is a lightweight monitoring adapter that bridges [Glances](https://nicolargo.github.io/glances/) system metrics with [Uptime Kuma](https://github.com/louislam/uptime-kuma) and other monitoring tools. It exposes simple HTTP endpoints with configurable thresholds that answer: *"Is my system healthy?"*
 
 ## ✨ Features
 
-- 🎯 **Simple Boolean Endpoints**: `/ram`, `/cpu`, `/disk` return `{"ok": true/false}`
-- 🎨 **Web UI**: Modern dashboard with sliding bars to configure thresholds
+- 🎯 **Simple HTTP Endpoints**: Returns HTTP 200 (OK) or 503 (unhealthy) based on thresholds
+- 🎨 **Web UI**: Modern dashboard with sliders to configure thresholds in real-time
 - ⚙️ **Configurable Thresholds**: Set custom limits for RAM, CPU, and disk usage
-- � **Persistent Configuration**: Changes saved to config.yaml automatically
-- �🐳 **Docker-First Design**: Ready for containerized deployments
-- 🚀 **Async & Fast**: Built on FastAPI + httpx for high performance
+- 💾 **Persistent Configuration**: Changes saved to config.yaml automatically
+- � **Easy Installation**: Just `pip install glancewatch` - everything included!
 - 📊 **Multiple Disk Monitoring**: Monitor all or specific mount points
-- 🔧 **Flexible Configuration**: Environment variables, YAML, or both
 - 🏥 **Health Checks**: Built-in health endpoint for service monitoring
-- 📝 **OpenAPI Docs**: Auto-generated API documentation
+- 📝 **OpenAPI Docs**: Auto-generated API documentation at `/docs`
 - 📈 **Real-Time Metrics**: Auto-refreshing dashboard shows live system status
 
 ## 🚀 Quick Start
 
-### Option 1: Docker Compose (Recommended)
+**Only requirement: Glances must be installed and running**
+
+### 1. Install and Start Glances
 
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/glancewatch.git
-cd glancewatch
+# Install Glances
+sudo apt install -y glances   # Ubuntu/Debian
+# or: pip install glances
 
-# Start both Glances and GlanceWatch
-cd docker
-docker-compose up -d
-
-# Access Web UI
-open http://localhost:8100/ui
-
-# Check API status
-curl http://localhost:8100/status
-```
-
-The Web UI provides:
-- 📊 **Real-time dashboard** showing current RAM, CPU, and disk usage
-- 🎚️ **Sliding bars** to adjust thresholds (10-100%)
-- 💾 **Instant persistence** - changes saved to config.yaml automatically
-- 🔄 **Auto-refresh** every 5 seconds
-- 🎨 **Modern dark theme** with color-coded status indicators
-
-### Option 2: Local Development
-
-```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Start Glances (in another terminal)
+# Start Glances API server
 glances -w
-
-# Run GlanceWatch
-python -m app.main
-
-# Test the API
-curl http://localhost:8000/health
 ```
+
+### 2. Install GlanceWatch
+
+```bash
+# From PyPI (when published)
+pip install glancewatch
+
+# Or from GitHub
+pip install git+https://github.com/collinskramp/glancewatch.git
+```
+
+### 3. Run GlanceWatch
+
+```bash
+glancewatch
+```
+
+That's it! 🎉
+
+- **Web UI**: http://localhost:8000/configure/
+- **API Docs**: http://localhost:8000/docs
+- **Status Endpoint**: http://localhost:8000/status
+
+**See [INSTALL.md](INSTALL.md) for detailed installation instructions, systemd service setup, and more.**
 
 ## 📡 API Endpoints
 
@@ -288,51 +282,69 @@ log_level: INFO
 
 ## 🔗 Uptime Kuma Integration
 
-1. Add a new monitor in Uptime Kuma
-2. Choose **HTTP(s) - Keyword** monitor type
-3. Set URL to: `http://your-server:8000/status`
-4. Set keyword to: `"ok":true` or `"ok": true`
-5. Set check interval (e.g., 60 seconds)
+Add GlanceWatch to Uptime Kuma for automatic alerting:
 
-### Alternative: HTTP Status Code
+1. **Add New Monitor** in Uptime Kuma
+2. **Monitor Type**: HTTP(s)
+3. **URL**: `http://your-server:8000/status`
+4. **Heartbeat Interval**: 20 seconds (or your preference)
+5. **Expected Status Code**: 2xx (for success)
+6. **Save**
 
-If you prefer HTTP status codes:
+**How it works:**
+- ✅ **HTTP 200**: All thresholds OK (Uptime Kuma shows GREEN/UP)
+- ⚠️ **HTTP 503**: One or more thresholds exceeded (Uptime Kuma shows RED/DOWN and alerts)
 
-1. Set `RETURN_HTTP_ON_FAILURE=503`
-2. Use **HTTP(s)** monitor type (no keyword needed)
-3. Uptime Kuma will alert on non-200 responses
+Configure your thresholds via the Web UI at http://your-server:8000/configure/
 
-## 🐳 Docker Deployment
+**See [INSTALL.md](INSTALL.md) for detailed setup instructions.**
 
-### Using Docker Compose
+## 🐳 Docker Deployment (Optional)
 
-The provided `docker-compose.yml` includes both Glances and GlanceWatch:
+If you prefer Docker, a `docker-compose.yml` is included that runs both Glances and GlanceWatch:
 
 ```bash
-cd docker
+git clone https://github.com/collinskramp/glancewatch.git
+cd glancewatch/docker
 docker-compose up -d
 ```
 
-Access points:
-- GlanceWatch API: http://localhost:8000
+Access:
+- GlanceWatch: http://localhost:8000
 - Glances Web UI: http://localhost:61208
 
-### Standalone Docker
+**See [INSTALL.md](INSTALL.md) for more deployment options.**
+
+## ⚙️ Configuration
+
+Configure via **Web UI** (easiest) or edit config file.
+
+### Web UI (Recommended)
+
+Visit http://localhost:8000/configure/ and use the sliders to adjust thresholds.
+
+### Config File
+
+Config is stored at `~/.config/glancewatch/config.yaml`:
+
+```yaml
+thresholds:
+  ram_percent: 80.0
+  cpu_percent: 80.0
+  disk_percent: 85.0
+```
+
+### Environment Variables
 
 ```bash
-# Build image
-docker build -f docker/Dockerfile -t glancewatch:latest .
-
-# Run container
-docker run -d \
-  --name glancewatch \
-  -p 8000:8000 \
-  -e GLANCES_BASE_URL=http://your-glances-host:61208 \
-  -e RAM_THRESHOLD=80 \
-  -e CPU_THRESHOLD=80 \
-  -e DISK_THRESHOLD=85 \
-  glancewatch:latest
+export GLANCEWATCH_GLANCES_URL=http://localhost:61208
+export GLANCEWATCH_RAM_THRESHOLD=80.0
+export GLANCEWATCH_CPU_THRESHOLD=80.0
+export GLANCEWATCH_DISK_THRESHOLD=85.0
+glancewatch
 ```
+
+**See [INSTALL.md](INSTALL.md) for complete configuration options.**
 
 ## 🧪 Testing
 
@@ -454,27 +466,20 @@ glancewatch/
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
-## 🤝 Contributing
+## 📞 Support & Contributing
 
-Contributions welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch
-3. Write tests for new features
-4. Ensure tests pass: `pytest tests/`
-5. Submit a pull request
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/collinskramp/glancewatch/issues)
+- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/collinskramp/glancewatch/discussions)
+- 📖 **Documentation**: 
+  - [Installation Guide](INSTALL.md)
+  - [API Documentation](http://localhost:8000/docs) (when running)
+  - [Ubuntu Quickstart](QUICKSTART-UBUNTU.md)
 
 ## 🙏 Acknowledgments
 
-- [Glances](https://nicolargo.github.io/glances/) - Excellent system monitoring tool
+- [Glances](https://nicolargo.github.io/glances/) - Excellent cross-platform monitoring tool
 - [Uptime Kuma](https://github.com/louislam/uptime-kuma) - Self-hosted monitoring solution
 - [FastAPI](https://fastapi.tiangolo.com/) - Modern Python web framework
-
-## 📞 Support
-
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/yourusername/glancewatch/issues)
-- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/yourusername/glancewatch/discussions)
-- 📖 **Documentation**: [API Docs](http://localhost:8000/docs) (when running)
 
 ---
 
