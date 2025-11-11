@@ -137,7 +137,7 @@ async def get_status(request: Request):
             if not result.ok:
                 return JSONResponse(
                     status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                    content=result.model_dump()
+                    content=result.model_dump(mode='json')
                 )
             
             return result
@@ -161,7 +161,7 @@ async def get_ram_status(request: Request):
             if not result.ok and app_config.return_http_on_failure:
                 return JSONResponse(
                     status_code=app_config.return_http_on_failure,
-                    content=result.model_dump()
+                    content=result.model_dump(mode='json')
                 )
             
             return result
@@ -185,7 +185,7 @@ async def get_cpu_status(request: Request):
             if not result.ok and app_config.return_http_on_failure:
                 return JSONResponse(
                     status_code=app_config.return_http_on_failure,
-                    content=result.model_dump()
+                    content=result.model_dump(mode='json')
                 )
             
             return result
@@ -209,7 +209,7 @@ async def get_disk_status(request: Request):
             if not result.ok and app_config.return_http_on_failure:
                 return JSONResponse(
                     status_code=app_config.return_http_on_failure,
-                    content=result.model_dump()
+                    content=result.model_dump(mode='json')
                 )
             
             return result
