@@ -1,3 +1,3 @@
 """GlanceWatch - Lightweight monitoring adapter for Glances + Uptime Kuma."""
 
-__version__ = "1.0.0"
+__version__ = "1.0.8"
