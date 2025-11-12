@@ -17,7 +17,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
-    {name = "Collins Kramp", email = "collinskramp@gmail.com"}
+    {name = "Collins Kramp", email = "collynes@gmail.com"}
 ]
 keywords = ["monitoring", "glances", "uptime-kuma", "metrics", "system-monitoring", "server-monitoring"]
 classifiers = [
