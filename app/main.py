@@ -84,7 +84,7 @@ async def lifespan(app: FastAPI):
     logger.info(f"Configuration loaded: Glances={app_config.glances_base_url}")
     
     # Mount UI at root
-    ui_dir = Path(__file__).parent.parent / "ui"
+    ui_dir = Path(__file__).parent / "ui"
     if ui_dir.exists():
         app.mount("/ui", StaticFiles(directory=str(ui_dir), html=True), name="ui")
         logger.info(f"UI mounted at / (serving from {ui_dir})")
@@ -148,7 +148,7 @@ async def handle_metric_error(request: Request, metric_name: str, error: Excepti
 @app.get("/", tags=["Info"])
 async def root():
     """Root endpoint - serves the UI."""
-    ui_file = Path(__file__).parent.parent / "ui" / "index.html"
+    ui_file = Path(__file__).parent / "ui" / "index.html"
     if ui_file.exists():
         return FileResponse(ui_file)
     return {
@@ -172,7 +172,7 @@ async def root():
 @app.get("/docs", tags=["Info"])
 async def docs():
     """Documentation page - how to add endpoints to Uptime Kuma."""
-    docs_file = Path(__file__).parent.parent / "ui" / "docs.html"
+    docs_file = Path(__file__).parent / "ui" / "docs.html"
     if docs_file.exists():
         return FileResponse(docs_file)
     return {
