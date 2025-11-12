@@ -18,7 +18,7 @@ glances -w  # Starts API server on port 61208
 ### 3. Install & Run GlanceWatch
 ```bash
 # From GitHub (until published to PyPI)
-pip install git+https://github.com/collinskramp/glancewatch.git
+pip install git+https://github.com/collynes/glancewatch.git
 
 # Run it
 glancewatch
@@ -34,7 +34,7 @@ That's it! 🚀
 
 ### Before:
 ```bash
-git clone https://github.com/collinskramp/glancewatch.git
+git clone https://github.com/collynes/glancewatch.git
 cd glancewatch
 pip install -r requirements.txt
 python -m app.main
@@ -42,7 +42,7 @@ python -m app.main
 
 ### After:
 ```bash
-pip install git+https://github.com/collinskramp/glancewatch.git
+pip install git+https://github.com/collynes/glancewatch.git
 glancewatch
 ```
 
@@ -115,7 +115,7 @@ cd ~/glanceswatch
 # (This was the git clone method)
 
 # Install new pip version
-pip install git+https://github.com/collinskramp/glancewatch.git
+pip install git+https://github.com/collynes/glancewatch.git
 
 # Verify
 which glancewatch
@@ -170,7 +170,7 @@ This keeps GlanceWatch lightweight and lets you manage Glances independently!
 Want to contribute or modify?
 
 ```bash
-git clone https://github.com/collinskramp/glancewatch.git
+git clone https://github.com/collynes/glancewatch.git
 cd glancewatch
 pip install -e ".[dev]"  # Installs in editable mode
 glancewatch
@@ -180,6 +180,6 @@ Changes to code take effect immediately!
 
 ## Support
 
-- GitHub Issues: https://github.com/collinskramp/glancewatch/issues
+- GitHub Issues: https://github.com/collynes/glancewatch/issues
 - Documentation: See INSTALL.md for detailed setup
 - API Docs: http://localhost:8000/docs (when running)

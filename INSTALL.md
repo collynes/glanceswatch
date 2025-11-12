@@ -34,7 +34,7 @@ glances -w
 pip install glancewatch
 
 # Or install from source
-pip install git+https://github.com/collinskramp/glancewatch.git
+pip install git+https://github.com/collynes/glancewatch.git
 ```
 
 ### 4. Run GlanceWatch
@@ -224,7 +224,7 @@ rm -rf ~/.config/glancewatch
 To install in development mode:
 
 ```bash
-git clone https://github.com/collinskramp/glancewatch.git
+git clone https://github.com/collynes/glancewatch.git
 cd glancewatch
 pip install -e ".[dev]"
 glancewatch

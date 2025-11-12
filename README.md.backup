@@ -1,0 +1,499 @@
+# GlanceWatch 🎯
+
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.109+-green.svg)](https://fastapi.tiangolo.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+**GlanceWatch** is a lightweight monitoring adapter that bridges [Glances](https://nicolargo.github.io/glances/) system metrics with [Uptime Kuma](https://github.com/louislam/uptime-kuma) and other monitoring tools. It exposes simple HTTP endpoints with configurable thresholds that answer: *"Is my system healthy?"*
+
+## ✨ Features
+
+- 🎯 **Simple HTTP Endpoints**: Returns HTTP 200 (OK) or 503 (unhealthy) based on thresholds
+- 🎨 **Web UI**: Modern dashboard with sliders to configure thresholds in real-time
+- ⚙️ **Configurable Thresholds**: Set custom limits for RAM, CPU, and disk usage
+- 💾 **Persistent Configuration**: Changes saved to config.yaml automatically
+- � **Easy Installation**: Just `pip install glancewatch` - everything included!
+- 📊 **Multiple Disk Monitoring**: Monitor all or specific mount points
+- 🏥 **Health Checks**: Built-in health endpoint for service monitoring
+- 📝 **OpenAPI Docs**: Auto-generated API documentation at `/docs`
+- 📈 **Real-Time Metrics**: Auto-refreshing dashboard shows live system status
+
+## 🚀 Quick Start
+
+**Prerequisites: Glances must be installed and running**
+
+### One-Line Install (Ubuntu/Debian)
+
+```bash
+curl -sSL https://raw.githubusercontent.com/collynes/glancewatch/main/install-pip.sh | bash
+```
+
+This installs Glances, GlanceWatch, and sets up systemd services automatically!
+
+### Manual Installation
+
+#### 1. Install and Start Glances
+
+```bash
+# Ubuntu/Debian
+sudo apt install -y glances
+glances -w
+
+# macOS
+brew install glances
+glances -w
+
+# Or via pip
+pip install glances
+glances -w
+```
+
+#### 2. Install GlanceWatch
+
+```bash
+# Install from PyPI
+pip install glancewatch
+```
+
+#### 3. Run GlanceWatch
+
+```bash
+glancewatch
+```
+
+That's it! 🎉
+
+**Access the dashboard:**
+- **Web UI**: http://localhost:8000/configure/
+- **API Docs**: http://localhost:8000/docs
+- **Status Endpoint**: http://localhost:8000/status
+
+**See [INSTALL.md](INSTALL.md) for detailed instructions, systemd setup, and troubleshooting.**
+
+## 📡 API Endpoints
+
+### Core Monitoring Endpoints
+
+#### `GET /status`
+Overall system status combining all metrics.
+
+```json
+{
+  "ok": true,
+  "ram": {
+    "ok": true,
+    "value": 45.2,
+    "threshold": 80.0,
+    "unit": "%"
+  },
+  "cpu": {
+    "ok": true,
+    "value": 32.5,
+    "threshold": 80.0,
+    "unit": "%"
+  },
+  "disk": {
+    "ok": true,
+    "disks": [
+      {
+        "mount_point": "/",
+        "percent_used": 62.3,
+        "size_gb": 500.0,
+        "ok": true
+      }
+    ],
+    "threshold": 85.0
+  },
+  "last_check": "2025-11-11T10:30:00"
+}
+```
+
+#### `GET /ram`
+RAM usage check.
+
+```json
+{
+  "ok": true,
+  "value": 45.2,
+  "threshold": 80.0,
+  "unit": "%",
+  "last_check": "2025-11-11T10:30:00"
+}
+```
+
+#### `GET /cpu`
+CPU usage check (average across all cores).
+
+```json
+{
+  "ok": true,
+  "value": 32.5,
+  "threshold": 80.0,
+  "unit": "%",
+  "last_check": "2025-11-11T10:30:00"
+}
+```
+
+#### `GET /disk`
+Disk usage check for monitored mount points.
+
+```json
+{
+  "ok": true,
+  "disks": [
+    {
+      "mount_point": "/",
+      "fs_type": "ext4",
+      "percent_used": 62.3,
+      "size_gb": 500.0,
+      "used_gb": 311.5,
+      "free_gb": 188.5,
+      "ok": true
+    }
+  ],
+  "threshold": 85.0,
+  "last_check": "2025-11-11T10:30:00"
+}
+```
+
+### Utility Endpoints
+
+#### `GET /health`
+Service health check.
+
+```json
+{
+  "status": "healthy",
+  "version": "1.0.0",
+  "glances_connected": true,
+  "glances_url": "http://localhost:61208",
+  "uptime_seconds": 3600.5,
+  "timestamp": "2025-11-11T10:30:00"
+}
+```
+
+#### `GET /config`
+View current configuration.
+
+```json
+{
+  "glances_base_url": "http://localhost:61208",
+  "thresholds": {
+    "ram_percent": 80.0,
+    "cpu_percent": 80.0,
+    "disk_percent": 85.0
+  },
+  "disk_mounts": ["/"],
+  "timestamp": "2025-11-11T10:30:00"
+}
+```
+
+#### `PUT /config`
+Update monitoring thresholds (also available via Web UI).
+
+**Request:**
+```json
+{
+  "thresholds": {
+    "ram_percent": 75.0,
+    "cpu_percent": 85.0,
+    "disk_percent": 90.0
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "ok": true,
+  "message": "Configuration updated successfully",
+  "thresholds": {
+    "ram_percent": 75.0,
+    "cpu_percent": 85.0,
+    "disk_percent": 90.0
+  }
+}
+```
+
+Changes are persisted to `/var/lib/glancewatch/config.yaml` and take effect immediately.
+
+### Web UI
+
+Access the configuration interface at `http://localhost:8100/ui`
+
+- **Dashboard**: Real-time metrics with visual indicators
+- **Sliders**: Adjust RAM, CPU, and Disk thresholds (10-100%)
+- **Persistence**: Changes saved automatically to config.yaml
+- **Auto-refresh**: Dashboard updates every 5 seconds
+- **Status Colors**:
+  - 🟢 Green: < 75% of threshold
+  - 🟡 Yellow: 75-90% of threshold
+  - 🔴 Red: > 90% of threshold
+
+## ⚙️ Configuration
+
+### Environment Variables
+
+Create a `.env` file or set environment variables:
+
+```bash
+# Glances Connection
+GLANCES_BASE_URL=http://localhost:61208
+GLANCES_TIMEOUT=5
+
+# Server Settings
+HOST=0.0.0.0
+PORT=8000
+
+# Thresholds (0-100)
+RAM_THRESHOLD=80.0
+CPU_THRESHOLD=80.0
+DISK_THRESHOLD=85.0
+
+# Disk Monitoring
+DISK_MOUNTS=/                           # Single mount
+# DISK_MOUNTS=/,/home,/data            # Multiple mounts
+# DISK_MOUNTS=all                      # All mounts
+DISK_EXCLUDE_TYPES=tmpfs,devtmpfs,overlay,squashfs
+
+# Error Handling
+RETURN_HTTP_ON_FAILURE=                 # 200 with ok=false (default)
+# RETURN_HTTP_ON_FAILURE=503           # Return 503 on failure
+
+# Logging
+LOG_LEVEL=INFO
+```
+
+### YAML Configuration
+
+Create `~/.config/glancewatch/config.yaml` (or `/var/lib/glancewatch/config.yaml` in Docker):
+
+```yaml
+glances_base_url: http://localhost:61208
+glances_timeout: 5
+
+host: 0.0.0.0
+port: 8000
+
+thresholds:
+  ram_percent: 80.0
+  cpu_percent: 80.0
+  disk_percent: 85.0
+
+disk:
+  mounts:
+    - /
+    - /home
+  exclude_types:
+    - tmpfs
+    - devtmpfs
+
+log_level: INFO
+```
+
+**Note**: Environment variables override YAML settings.
+
+## 🔗 Uptime Kuma Integration
+
+Add GlanceWatch to Uptime Kuma for automatic alerting:
+
+1. **Add New Monitor** in Uptime Kuma
+2. **Monitor Type**: HTTP(s)
+3. **URL**: `http://your-server:8000/status`
+4. **Heartbeat Interval**: 20 seconds (or your preference)
+5. **Expected Status Code**: 2xx (for success)
+6. **Save**
+
+**How it works:**
+- ✅ **HTTP 200**: All thresholds OK (Uptime Kuma shows GREEN/UP)
+- ⚠️ **HTTP 503**: One or more thresholds exceeded (Uptime Kuma shows RED/DOWN and alerts)
+
+Configure your thresholds via the Web UI at http://your-server:8000/configure/
+
+**See [INSTALL.md](INSTALL.md) for detailed setup instructions.**
+
+## 🐳 Docker Deployment (Optional)
+
+If you prefer Docker, a `docker-compose.yml` is included that runs both Glances and GlanceWatch:
+
+```bash
+git clone https://github.com/collynes/glancewatch.git
+cd glancewatch/docker
+docker-compose up -d
+```
+
+Access:
+- GlanceWatch: http://localhost:8000
+- Glances Web UI: http://localhost:61208
+
+**See [INSTALL.md](INSTALL.md) for more deployment options.**
+
+## ⚙️ Configuration
+
+Configure via **Web UI** (easiest) or edit config file.
+
+### Web UI (Recommended)
+
+Visit http://localhost:8000/configure/ and use the sliders to adjust thresholds.
+
+### Config File
+
+Config is stored at `~/.config/glancewatch/config.yaml`:
+
+```yaml
+thresholds:
+  ram_percent: 80.0
+  cpu_percent: 80.0
+  disk_percent: 85.0
+```
+
+### Environment Variables
+
+```bash
+export GLANCEWATCH_GLANCES_URL=http://localhost:61208
+export GLANCEWATCH_RAM_THRESHOLD=80.0
+export GLANCEWATCH_CPU_THRESHOLD=80.0
+export GLANCEWATCH_DISK_THRESHOLD=85.0
+glancewatch
+```
+
+**See [INSTALL.md](INSTALL.md) for complete configuration options.**
+
+## 🧪 Testing
+
+Run the test suite:
+
+```bash
+# Install dev dependencies
+pip install -r requirements-dev.txt
+
+# Run tests
+pytest tests/ -v
+
+# With coverage
+pytest tests/ --cov=app --cov-report=html
+```
+
+## 📊 Example Use Cases
+
+### 1. Alert When RAM Exceeds 80%
+```bash
+# Set threshold
+export RAM_THRESHOLD=80
+
+# Monitor endpoint
+curl http://localhost:8000/ram
+# Returns: {"ok": false, "value": 85.2, ...} when exceeded
+```
+
+### 2. Monitor Multiple Disks
+```bash
+# Monitor root and data partitions
+export DISK_MOUNTS=/,/data
+
+curl http://localhost:8000/disk
+```
+
+### 3. Integration with Scripts
+```bash
+#!/bin/bash
+RESPONSE=$(curl -s http://localhost:8000/status)
+OK=$(echo $RESPONSE | jq -r '.ok')
+
+if [ "$OK" != "true" ]; then
+    echo "System unhealthy!"
+    # Send notification, trigger action, etc.
+fi
+```
+
+## 🛠️ Development
+
+### Code Quality
+
+```bash
+# Format code
+black app/ tests/
+
+# Lint
+ruff check app/ tests/
+
+# Type checking
+mypy app/
+```
+
+### Project Structure
+
+```
+glancewatch/
+├── app/
+│   ├── __init__.py          # Package initialization
+│   ├── main.py              # FastAPI application
+│   ├── monitor.py           # Core monitoring logic
+│   ├── config.py            # Configuration management
+│   ├── models.py            # Pydantic data models
+│   └── api/
+│       ├── __init__.py
+│       └── health.py        # Health check endpoint
+├── tests/
+│   ├── test_monitor.py      # Monitor tests
+│   └── test_api.py          # API endpoint tests
+├── docker/
+│   ├── Dockerfile           # Container image
+│   └── docker-compose.yml   # Development stack
+├── requirements.txt         # Production dependencies
+├── requirements-dev.txt     # Development dependencies
+└── README.md               # This file
+```
+
+## 🔧 Troubleshooting
+
+### Glances Connection Failed
+
+**Problem**: `"error": "Failed to fetch RAM data"`
+
+**Solutions**:
+1. Check Glances is running: `ps aux | grep glances`
+2. Verify Glances API: `curl http://localhost:61208/api/3/mem`
+3. Check `GLANCES_BASE_URL` configuration
+4. Ensure Glances web server is enabled: `glances -w`
+
+### High False Positive Rate
+
+**Problem**: Alerts trigger too frequently
+
+**Solutions**:
+1. Increase thresholds: `RAM_THRESHOLD=90`
+2. Adjust check interval in monitoring tool
+3. Use `/status` for combined health (all metrics must fail)
+
+### Docker Container Unhealthy
+
+**Problem**: Health checks failing
+
+**Solutions**:
+1. Check logs: `docker logs glancewatch`
+2. Verify Glances connectivity from container
+3. Increase health check timeout in compose file
+
+## 📜 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+## 📞 Support & Contributing
+
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/collynes/glancewatch/issues)
+- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/collynes/glancewatch/discussions)
+- 📖 **Documentation**: 
+  - [Installation Guide](INSTALL.md)
+  - [API Documentation](http://localhost:8000/docs) (when running)
+  - [Ubuntu Quickstart](QUICKSTART-UBUNTU.md)
+
+## 🙏 Acknowledgments
+
+- [Glances](https://nicolargo.github.io/glances/) - Excellent cross-platform monitoring tool
+- [Uptime Kuma](https://github.com/louislam/uptime-kuma) - Self-hosted monitoring solution
+- [FastAPI](https://fastapi.tiangolo.com/) - Modern Python web framework
+
+---
+
+**Made with ❤️ for the self-hosted community**

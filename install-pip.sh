@@ -1,6 +1,6 @@
 #!/bin/bash
 # GlanceWatch pip installation script for Ubuntu
-# Usage: curl -sSL https://raw.githubusercontent.com/collinskramp/glancewatch/main/install-pip.sh | bash
+# Usage: curl -sSL https://raw.githubusercontent.com/collynes/glancewatch/main/install-pip.sh | bash
 
 set -e
 
@@ -131,6 +131,6 @@ echo "   sudo systemctl logs -f glancewatch"
 echo "   curl http://localhost:8000/status"
 echo ""
 echo "📚 Documentation:"
-echo "   https://github.com/collinskramp/glancewatch"
+echo "   https://github.com/collynes/glancewatch"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""

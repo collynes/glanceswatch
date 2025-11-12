@@ -11,7 +11,7 @@ app = ["py.typed"]
 
 [project]
 name = "glancewatch"
-version = "1.0.0"
+version = "1.0.1"
 description = "Lightweight monitoring adapter bridging Glances metrics with Uptime Kuma"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -41,6 +41,7 @@ dependencies = [
     "pydantic>=2.5.0",
     "pydantic-settings>=2.1.0",
     "PyYAML>=6.0.1",
+    "glances>=3.4.0",
 ]
 
 [project.scripts]
@@ -58,11 +59,11 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/collinskramp/glancewatch"
-Documentation = "https://github.com/collinskramp/glancewatch#readme"
-Repository = "https://github.com/collinskramp/glancewatch"
-Issues = "https://github.com/collinskramp/glancewatch/issues"
-Changelog = "https://github.com/collinskramp/glancewatch/releases"
+Homepage = "https://github.com/collynes/glancewatch"
+Documentation = "https://github.com/collynes/glancewatch#readme"
+Repository = "https://github.com/collynes/glancewatch"
+Issues = "https://github.com/collynes/glancewatch/issues"
+Changelog = "https://github.com/collynes/glancewatch/releases"
 
 [tool.black]
 line-length = 100

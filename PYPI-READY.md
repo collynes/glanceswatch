@@ -6,7 +6,7 @@ Everything is now set up for PyPI publication. Here's what to do next:
 
 ### ✅ Already Done
 - [x] Package structure configured in `pyproject.toml`
-- [x] Author email added (collinskramp@gmail.com)
+- [x] Author email added (collynes@gmail.com)
 - [x] README updated with PyPI installation instructions
 - [x] install-pip.sh updated to use PyPI package
 - [x] publish.sh script created for easy publishing
@@ -60,7 +60,7 @@ Everything is now set up for PyPI publication. Here's what to do next:
    ```
 
 6. **Create GitHub Release**:
-   - Go to https://github.com/collinskramp/glancewatch/releases/new
+   - Go to https://github.com/collynes/glancewatch/releases/new
    - Tag: `v1.0.0`
    - Title: `GlanceWatch v1.0.0`
    - Description:
@@ -88,7 +88,7 @@ Everything is now set up for PyPI publication. Here's what to do next:
      - Python 3.8+
      - Glances running with web API (`glances -w`)
      
-     See [README.md](https://github.com/collinskramp/glancewatch#readme) for full documentation.
+     See [README.md](https://github.com/collynes/glancewatch#readme) for full documentation.
      ```
 
 ## 📦 After Publishing
@@ -103,7 +103,7 @@ pip install glancewatch
 pip install glances glancewatch
 
 # One-line Ubuntu setup
-curl -sSL https://raw.githubusercontent.com/collinskramp/glancewatch/main/install-pip.sh | bash
+curl -sSL https://raw.githubusercontent.com/collynes/glancewatch/main/install-pip.sh | bash
 ```
 
 ### What Happens Next

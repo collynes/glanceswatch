@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GlanceWatch - Configuration</title>
+    <title>GlanceWatch - System Monitoring</title>
     <style>
         * {
             margin: 0;
@@ -12,117 +12,118 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1a2742 100%);
-            color: #f1f5f9;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f5f5;
+            color: #333;
             min-height: 100vh;
-            padding: 2rem;
+        }
+
+        .header {
+            background: #fff;
+            border-bottom: 2px solid #ddd;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .header .version {
+            color: #666;
+            font-size: 0.875rem;
         }
 
         .container {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 2rem auto;
+            padding: 0 2rem;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding-top: 2rem;
-        }
-
-        h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #3b82f6, #10b981);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-        }
-
-        .tagline {
-            color: #94a3b8;
-            font-size: 1.1rem;
-        }
-
-        .card {
-            background: #1e293b;
-            border-radius: 16px;
-            padding: 2rem;
+        .section {
+            background: #fff;
+            border: 1px solid #ddd;
             margin-bottom: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border: 1px solid #475569;
         }
 
-        h2 {
-            font-size: 1.75rem;
+        .section-header {
+            background: #f8f8f8;
+            border-bottom: 1px solid #ddd;
+            padding: 0.75rem 1.25rem;
+            font-weight: bold;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .section-body {
+            padding: 1.25rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th,
+        table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        table th {
+            background: #f8f8f8;
+            font-weight: bold;
+            color: #333;
+            font-size: 0.875rem;
+        }
+
+        table td {
+            font-size: 0.875rem;
+            color: #555;
+        }
+
+        table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-ok {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .status-critical {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
             margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #333;
+            font-size: 0.875rem;
         }
-
-        .description {
-            color: #94a3b8;
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-        }
-
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .metric-card {
-            background: #334155;
-            padding: 1.5rem;
-            border-radius: 12px;
-        }
-
-        .metric-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .metric-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .status-ok { color: #10b981; }
-        .status-warning { color: #f59e0b; }
-        .status-critical { color: #ef4444; }
 
         .slider-container {
-            margin-bottom: 1.5rem;
-        }
-
-        .slider-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.75rem;
-        }
-
-        .slider-header label {
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .slider-value {
-            font-size: 1.25rem;
-            font-weight: 700;
-            min-width: 60px;
-            text-align: right;
+            gap: 1rem;
         }
 
         input[type="range"] {
-            width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            background: #475569;
+            flex: 1;
+            height: 4px;
+            border-radius: 2px;
+            background: #ddd;
             outline: none;
             -webkit-appearance: none;
             appearance: none;
@@ -131,40 +132,48 @@
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 24px;
-            height: 24px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
-            background: #3b82f6;
+            background: #007bff;
             cursor: pointer;
-            box-shadow: 0 2px 10px rgba(59, 130, 246, 0.5);
         }
 
         input[type="range"]::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
-            background: #3b82f6;
+            background: #007bff;
             cursor: pointer;
             border: none;
-            box-shadow: 0 2px 10px rgba(59, 130, 246, 0.5);
+        }
+
+        .slider-value {
+            min-width: 50px;
+            text-align: right;
+            font-weight: bold;
+            color: #333;
+            font-size: 0.875rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
         }
 
         button {
-            background: #3b82f6;
+            background: #007bff;
             color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
+            border: 1px solid #0056b3;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
             cursor: pointer;
-            transition: all 0.2s;
-            margin-right: 1rem;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
         button:hover {
-            background: #2563eb;
-            transform: translateY(-1px);
+            background: #0056b3;
         }
 
         button:disabled {
@@ -172,176 +181,155 @@
             cursor: not-allowed;
         }
 
-        .save-button {
-            background: #10b981;
+        .btn-success {
+            background: #28a745;
+            border-color: #1e7e34;
         }
 
-        .save-button:hover {
-            background: #059669;
+        .btn-success:hover {
+            background: #1e7e34;
         }
 
-        .reset-button {
-            background: #475569;
+        .btn-secondary {
+            background: #6c757d;
+            border-color: #545b62;
         }
 
-        .reset-button:hover {
-            background: #64748b;
+        .btn-secondary:hover {
+            background: #545b62;
         }
 
-        .success-message {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid #10b981;
-            color: #10b981;
-            padding: 1rem;
-            border-radius: 8px;
+        .alert {
+            padding: 0.75rem 1rem;
             margin-bottom: 1rem;
+            border: 1px solid transparent;
+            font-size: 0.875rem;
         }
 
-        .error-message {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid #ef4444;
-            color: #ef4444;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .alert-error {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
         }
 
         .loading {
             text-align: center;
-            padding: 3rem;
+            padding: 2rem;
+            color: #666;
         }
 
-        .spinner {
-            width: 48px;
-            height: 48px;
-            border: 4px solid #334155;
-            border-top-color: #3b82f6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .last-update {
+        .footer {
             text-align: center;
-            color: #94a3b8;
-            font-size: 0.85rem;
-            margin-top: 2rem;
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem 0;
-            color: #94a3b8;
-            font-size: 0.85rem;
-            border-top: 1px solid #475569;
+            padding: 1rem;
+            color: #999;
+            font-size: 0.75rem;
+            border-top: 1px solid #ddd;
             margin-top: 2rem;
         }
     </style>
 </head>
 <body>
+    <div class="header">
+        <h1>GlanceWatch System Monitor</h1>
+        <span class="version">v1.0.1</span>
+    </div>
+
     <div class="container">
-        <header>
-            <h1>🔍 GlanceWatch</h1>
-            <p class="tagline">Lightweight System Monitoring</p>
-        </header>
-
-        <!-- Dashboard Section -->
-        <div id="dashboard">
-            <div class="card">
-                <h2>📊 System Status</h2>
-                <div class="loading" id="dashboardLoading">
-                    <div class="spinner"></div>
-                    <p>Loading metrics...</p>
-                </div>
-                <div id="dashboardContent" style="display: none;">
-                    <div class="metrics-grid">
-                        <div class="metric-card">
-                            <div class="metric-header">
-                                <h3>💾 RAM Usage</h3>
-                                <span id="ramIcon"></span>
-                            </div>
-                            <div id="ramValue" class="metric-value">--</div>
-                            <div id="ramThreshold" style="color: #94a3b8; font-size: 0.9rem;">Threshold: --</div>
-                        </div>
-
-                        <div class="metric-card">
-                            <div class="metric-header">
-                                <h3>⚡ CPU Usage</h3>
-                                <span id="cpuIcon"></span>
-                            </div>
-                            <div id="cpuValue" class="metric-value">--</div>
-                            <div id="cpuThreshold" style="color: #94a3b8; font-size: 0.9rem;">Threshold: --</div>
-                        </div>
-
-                        <div class="metric-card">
-                            <div class="metric-header">
-                                <h3>💿 Disk Usage</h3>
-                                <span id="diskIcon"></span>
-                            </div>
-                            <div id="diskValue" class="metric-value">--</div>
-                            <div id="diskThreshold" style="color: #94a3b8; font-size: 0.9rem;">Threshold: --</div>
-                        </div>
+        <!-- System Status Section -->
+        <div class="section">
+            <div class="section-header">System Status</div>
+            <div class="section-body">
+                <div id="statusLoading" class="loading">Loading system metrics...</div>
+                <div id="statusContent" style="display: none;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Current Value</th>
+                                <th>Threshold</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>RAM Usage</td>
+                                <td id="ramValue">--</td>
+                                <td id="ramThreshold">--</td>
+                                <td id="ramStatus">--</td>
+                            </tr>
+                            <tr>
+                                <td>CPU Usage</td>
+                                <td id="cpuValue">--</td>
+                                <td id="cpuThreshold">--</td>
+                                <td id="cpuStatus">--</td>
+                            </tr>
+                            <tr>
+                                <td>Disk Usage</td>
+                                <td id="diskValue">--</td>
+                                <td id="diskThreshold">--</td>
+                                <td id="diskStatus">--</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="margin-top: 1rem; color: #666; font-size: 0.75rem;">
+                        Last updated: <span id="lastUpdate">--</span>
                     </div>
-                    <div class="last-update">Last updated: <span id="lastUpdate">--</span></div>
                 </div>
             </div>
         </div>
 
         <!-- Configuration Section -->
-        <div class="card">
-            <h2>⚙️ Threshold Configuration</h2>
-            <p class="description">
-                Adjust the alert thresholds for system monitoring. Changes are applied immediately to the monitoring service.
-            </p>
+        <div class="section">
+            <div class="section-header">Threshold Configuration</div>
+            <div class="section-body">
+                <div id="configLoading" class="loading">Loading configuration...</div>
+                <div id="configContent" style="display: none;">
+                    <div id="successMessage" class="alert alert-success" style="display: none;"></div>
+                    <div id="errorMessage" class="alert alert-error" style="display: none;"></div>
 
-            <div id="configLoading" class="loading">
-                <div class="spinner"></div>
-                <p>Loading configuration...</p>
-            </div>
-
-            <div id="configContent" style="display: none;">
-                <div id="successMessage" class="success-message" style="display: none;"></div>
-                <div id="errorMessage" class="error-message" style="display: none;"></div>
-
-                <div class="slider-container">
-                    <div class="slider-header">
-                        <label for="ramSlider">RAM Threshold</label>
-                        <span class="slider-value" id="ramSliderValue">80%</span>
+                    <div class="form-group">
+                        <label for="ramSlider">RAM Threshold (%)</label>
+                        <div class="slider-container">
+                            <input type="range" id="ramSlider" min="10" max="100" value="80" step="1">
+                            <span class="slider-value" id="ramSliderValue">80%</span>
+                        </div>
                     </div>
-                    <input type="range" id="ramSlider" min="10" max="100" value="80" step="1">
-                </div>
 
-                <div class="slider-container">
-                    <div class="slider-header">
-                        <label for="cpuSlider">CPU Threshold</label>
-                        <span class="slider-value" id="cpuSliderValue">80%</span>
+                    <div class="form-group">
+                        <label for="cpuSlider">CPU Threshold (%)</label>
+                        <div class="slider-container">
+                            <input type="range" id="cpuSlider" min="10" max="100" value="80" step="1">
+                            <span class="slider-value" id="cpuSliderValue">80%</span>
+                        </div>
                     </div>
-                    <input type="range" id="cpuSlider" min="10" max="100" value="80" step="1">
-                </div>
 
-                <div class="slider-container">
-                    <div class="slider-header">
-                        <label for="diskSlider">Disk Threshold</label>
-                        <span class="slider-value" id="diskSliderValue">85%</span>
+                    <div class="form-group">
+                        <label for="diskSlider">Disk Threshold (%)</label>
+                        <div class="slider-container">
+                            <input type="range" id="diskSlider" min="10" max="100" value="85" step="1">
+                            <span class="slider-value" id="diskSliderValue">85%</span>
+                        </div>
                     </div>
-                    <input type="range" id="diskSlider" min="10" max="100" value="85" step="1">
-                </div>
 
-                <div>
-                    <button id="saveButton" class="save-button">Save Changes</button>
-                    <button id="resetButton" class="reset-button">Reset</button>
+                    <div class="button-group">
+                        <button id="saveButton" class="btn-success">Apply Changes</button>
+                        <button id="resetButton" class="btn-secondary">Reset</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <footer>
-            <p>GlanceWatch v1.0.0 | Powered by Glances + Uptime Kuma</p>
-        </footer>
+        <div class="footer">
+            GlanceWatch v1.0.1 &copy; 2025 | System Monitoring Tool
+        </div>
     </div>
+
 
     <script>
         // State
@@ -376,7 +364,7 @@
             } catch (error) {
                 console.error('Config load error:', error);
                 document.getElementById('configLoading').innerHTML = 
-                    '<p style="color: #ef4444;">Failed to load configuration: ' + error.message + '</p>';
+                    '<p style="color: #dc3545;">Failed to load configuration: ' + error.message + '</p>';
             }
         }
 
@@ -390,40 +378,33 @@
                 const data = await response.json();
                 
                 // Update RAM
-                const ramClass = data.ram.ok ? 'status-ok' : 'status-critical';
                 document.getElementById('ramValue').textContent = data.ram.value.toFixed(1) + '%';
-                document.getElementById('ramValue').className = 'metric-value ' + ramClass;
-                document.getElementById('ramIcon').textContent = data.ram.ok ? '✓' : '⚠';
-                document.getElementById('ramIcon').className = ramClass;
-                document.getElementById('ramThreshold').textContent = `Threshold: ${data.ram.threshold}%`;
+                document.getElementById('ramThreshold').textContent = data.ram.threshold + '%';
+                document.getElementById('ramStatus').textContent = data.ram.ok ? 'OK' : 'CRITICAL';
+                document.getElementById('ramStatus').className = data.ram.ok ? 'status-ok' : 'status-critical';
                 
                 // Update CPU
-                const cpuClass = data.cpu.ok ? 'status-ok' : 'status-critical';
                 document.getElementById('cpuValue').textContent = data.cpu.value.toFixed(1) + '%';
-                document.getElementById('cpuValue').className = 'metric-value ' + cpuClass;
-                document.getElementById('cpuIcon').textContent = data.cpu.ok ? '✓' : '⚠';
-                document.getElementById('cpuIcon').className = cpuClass;
-                document.getElementById('cpuThreshold').textContent = `Threshold: ${data.cpu.threshold}%`;
+                document.getElementById('cpuThreshold').textContent = data.cpu.threshold + '%';
+                document.getElementById('cpuStatus').textContent = data.cpu.ok ? 'OK' : 'CRITICAL';
+                document.getElementById('cpuStatus').className = data.cpu.ok ? 'status-ok' : 'status-critical';
                 
                 // Update Disk
-                const diskClass = data.disk.ok ? 'status-ok' : 'status-critical';
-                document.getElementById('diskValue').textContent = data.disk.disks.length > 0 
-                    ? data.disk.disks[0].percent_used.toFixed(1) + '%' 
-                    : 'N/A';
-                document.getElementById('diskValue').className = 'metric-value ' + diskClass;
-                document.getElementById('diskIcon').textContent = data.disk.ok ? '✓' : '⚠';
-                document.getElementById('diskIcon').className = diskClass;
-                document.getElementById('diskThreshold').textContent = `Threshold: ${data.disk.threshold}%`;
+                const diskValue = data.disk.disks.length > 0 ? data.disk.disks[0].percent_used.toFixed(1) + '%' : 'N/A';
+                document.getElementById('diskValue').textContent = diskValue;
+                document.getElementById('diskThreshold').textContent = data.disk.threshold + '%';
+                document.getElementById('diskStatus').textContent = data.disk.ok ? 'OK' : 'CRITICAL';
+                document.getElementById('diskStatus').className = data.disk.ok ? 'status-ok' : 'status-critical';
                 
                 // Update timestamp
-                document.getElementById('lastUpdate').textContent = new Date(data.last_check).toLocaleTimeString();
+                document.getElementById('lastUpdate').textContent = new Date(data.last_check).toLocaleString();
                 
-                document.getElementById('dashboardLoading').style.display = 'none';
-                document.getElementById('dashboardContent').style.display = 'block';
+                document.getElementById('statusLoading').style.display = 'none';
+                document.getElementById('statusContent').style.display = 'block';
             } catch (error) {
                 console.error('Metrics load error:', error);
-                document.getElementById('dashboardLoading').innerHTML = 
-                    '<p style="color: #ef4444;">Failed to load metrics: ' + error.message + '</p>';
+                document.getElementById('statusLoading').innerHTML = 
+                    '<p style="color: #dc3545;">Failed to load metrics: ' + error.message + '</p>';
             }
         }
 
@@ -459,7 +440,7 @@
         // Save configuration
         async function saveConfig() {
             try {
-                document.getElementById('saveButton').textContent = 'Saving...';
+                document.getElementById('saveButton').textContent = 'Applying...';
                 document.getElementById('saveButton').disabled = true;
                 
                 const response = await fetch('/config', {
@@ -481,14 +462,14 @@
                 hasChanges = false;
                 updateButtons();
                 
-                showSuccess('Configuration saved successfully!');
-                document.getElementById('saveButton').textContent = 'Save Changes';
+                showSuccess('Configuration applied successfully');
+                document.getElementById('saveButton').textContent = 'Apply Changes';
                 
                 // Reload metrics to show new thresholds
                 loadMetrics();
             } catch (error) {
                 showError('Failed to save configuration: ' + error.message);
-                document.getElementById('saveButton').textContent = 'Save Changes';
+                document.getElementById('saveButton').textContent = 'Apply Changes';
                 document.getElementById('saveButton').disabled = false;
             }
         }
@@ -506,7 +487,7 @@
         // Show success message
         function showSuccess(message) {
             const el = document.getElementById('successMessage');
-            el.textContent = '✓ ' + message;
+            el.textContent = message;
             el.style.display = 'block';
             setTimeout(() => {
                 el.style.display = 'none';
@@ -516,7 +497,7 @@
         // Show error message
         function showError(message) {
             const el = document.getElementById('errorMessage');
-            el.textContent = '⚠️ ' + message;
+            el.textContent = message;
             el.style.display = 'block';
         }
 

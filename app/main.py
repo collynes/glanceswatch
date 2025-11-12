@@ -1,11 +1,15 @@
 """FastAPI application for GlanceWatch."""
 
+import argparse
 import logging
+import subprocess
+import sys
+import time
 from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, Request, status
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -31,22 +35,58 @@ logger = logging.getLogger(__name__)
 
 # Global config
 app_config: Config = None
+start_time: float = 0
+
+
+def check_glances_running() -> bool:
+    """Check if Glances is running"""
+    try:
+        result = subprocess.run(
+            ["pgrep", "-x", "glances"],
+            capture_output=True,
+            text=True
+        )
+        return result.returncode == 0
+    except Exception:
+        return False
+
+
+def start_glances():
+    """Start Glances in web mode"""
+    try:
+        logger.info("Starting Glances web server...")
+        subprocess.Popen(
+            ["glances", "-w"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+        # Wait for Glances to start
+        time.sleep(3)
+        logger.info("Glances started successfully")
+    except FileNotFoundError:
+        logger.error("Glances not found. Please install: pip install glances")
+        sys.exit(1)
+    except Exception as e:
+        logger.error(f"Failed to start Glances: {e}")
+        sys.exit(1)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan handler - runs startup and shutdown tasks."""
-    global app_config
+    global app_config, start_time
+    
+    start_time = time.time()
     
     # Startup - Load configuration
     app_config = ConfigLoader.load()
     logger.info(f"Configuration loaded: Glances={app_config.glances_base_url}")
     
-    # Mount UI
+    # Mount UI at root
     ui_dir = Path(__file__).parent.parent / "ui"
     if ui_dir.exists():
-        app.mount("/configure", StaticFiles(directory=str(ui_dir), html=True), name="configure")
-        logger.info(f"UI mounted at /configure (serving from {ui_dir})")
+        app.mount("/ui", StaticFiles(directory=str(ui_dir), html=True), name="ui")
+        logger.info(f"UI mounted at / (serving from {ui_dir})")
     else:
         logger.warning(f"UI directory not found: {ui_dir}")
     
@@ -61,7 +101,9 @@ app = FastAPI(
     title="GlanceWatch",
     description="Lightweight monitoring adapter for Glances + Uptime Kuma",
     version=__version__,
-    lifespan=lifespan
+    lifespan=lifespan,
+    docs_url="/api",  # Changed from /docs
+    redoc_url=None
 )
 
 # Add CORS middleware
@@ -104,19 +146,23 @@ async def handle_metric_error(request: Request, metric_name: str, error: Excepti
 
 @app.get("/", tags=["Info"])
 async def root():
-    """Root endpoint with service information."""
+    """Root endpoint - serves the UI."""
+    ui_file = Path(__file__).parent.parent / "ui" / "index.html"
+    if ui_file.exists():
+        return FileResponse(ui_file)
     return {
         "service": "GlanceWatch",
         "version": __version__,
         "description": "Lightweight monitoring adapter for Glances + Uptime Kuma",
         "endpoints": {
-            "ui": "/configure",
+            "ui": "/",
             "health": "/health",
             "status": "/status",
             "ram": "/ram",
             "cpu": "/cpu",
             "disk": "/disk",
-            "config": "/config"
+            "config": "/config",
+            "api_docs": "/api"
         }
     }
 
@@ -296,34 +342,56 @@ async def update_config(update: ThresholdUpdate):
         )
 
 
-if __name__ == "__main__":
-    import uvicorn
-    from pathlib import Path
-    
-    # Mount static files for UI if available
-    ui_dir = Path(__file__).parent.parent / "ui"
-    if ui_dir.exists():
-        app.mount("/configure", StaticFiles(directory=str(ui_dir), html=True), name="configure")
-        logger.info(f"UI available at /configure")
-    
-    config = ConfigLoader.load()
-    uvicorn.run(
-        "app.main:app",
-        host=config.host,
-        port=config.port,
-        log_level=config.log_level.lower()
-    )
-
-
 def cli():
     """CLI entry point for glancewatch command."""
-    import uvicorn
+    parser = argparse.ArgumentParser(
+        description="GlanceWatch - Lightweight monitoring adapter for Glances + Uptime Kuma",
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument(
+        "--ignore-glances",
+        action="store_true",
+        help="Skip automatic Glances installation and startup check"
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        help="Override the port number (default: from config.yaml or 8000)"
+    )
+    parser.add_argument(
+        "--host",
+        type=str,
+        help="Override the host address (default: from config.yaml or 0.0.0.0)"
+    )
     
+    args = parser.parse_args()
+    
+    # Load configuration
     config = ConfigLoader.load()
+    
+    # Override config with CLI arguments if provided
+    if args.port:
+        config.port = args.port
+    if args.host:
+        config.host = args.host
+    
+    # Check and start Glances if needed (unless --ignore-glances is set)
+    if not args.ignore_glances:
+        if not check_glances_running():
+            logger.info("Glances is not running. Starting Glances...")
+            if not start_glances():
+                logger.warning("Failed to start Glances. Continuing anyway...")
+                logger.warning("You may need to start Glances manually: glances -w")
+        else:
+            logger.info("Glances is already running")
+    else:
+        logger.info("Skipping Glances check (--ignore-glances flag set)")
+    
     logger.info(f"Starting GlanceWatch v{__version__}")
     logger.info(f"Glances URL: {config.glances_base_url}")
     logger.info(f"Server: http://{config.host}:{config.port}")
-    logger.info(f"Web UI: http://{'localhost' if config.host == '0.0.0.0' else config.host}:{config.port}/configure/")
+    logger.info(f"Web UI: http://{'localhost' if config.host == '0.0.0.0' else config.host}:{config.port}/")
+    logger.info(f"API Docs: http://{'localhost' if config.host == '0.0.0.0' else config.host}:{config.port}/api")
     
     uvicorn.run(
         "app.main:app",
@@ -331,3 +399,7 @@ def cli():
         port=config.port,
         log_level=config.log_level.lower()
     )
+
+
+if __name__ == "__main__":
+    cli()
