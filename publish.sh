@@ -32,7 +32,7 @@ python3 -m build
 
 # Check the package
 echo "✅ Checking package..."
-twine check dist/*
+python3 -m twine check dist/*
 
 # Show what will be uploaded
 echo ""
@@ -50,7 +50,7 @@ fi
 
 # Upload to PyPI
 echo "📤 Uploading to PyPI..."
-twine upload dist/*
+python3 -m twine upload dist/*
 
 echo ""
 echo "✅ Published successfully!"
