@@ -4,6 +4,8 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109+-green.svg)](https://fastapi.tiangolo.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PyPI version](https://badge.fury.io/py/glancewatch.svg)](https://pypi.org/project/glancewatch/)
+[![Tests](https://github.com/collinskramp/glancewatch/workflows/Tests/badge.svg)](https://github.com/collinskramp/glancewatch/actions)
+[![Coverage](https://img.shields.io/badge/coverage-78%25-brightgreen.svg)](https://github.com/collinskramp/glancewatch)
 
 **GlanceWatch** is a lightweight monitoring adapter that bridges [Glances](https://nicolargo.github.io/glances/) system metrics with [Uptime Kuma](https://github.com/louislam/uptime-kuma) and other monitoring tools. It exposes simple HTTP endpoints with configurable thresholds that answer: *"Is my system healthy?"*
 
@@ -93,6 +95,56 @@ disk:
 ```
 
 Adjust thresholds via the Web UI at `/` or edit the config file.
+
+## 🧪 Testing & Development
+
+GlanceWatch has comprehensive test coverage to ensure reliability:
+
+### Running Tests
+
+```bash
+# Install development dependencies
+pip install -e ".[dev]"
+
+# Run all tests
+pytest tests/ -v
+
+# Run with coverage report
+pytest tests/ --cov=app --cov-report=html
+
+# Run specific test file
+pytest tests/test_api.py -v
+
+# Run and stop on first failure
+pytest tests/ -x
+```
+
+### Test Coverage
+
+- **78%+ code coverage** with 63+ test cases
+- All endpoints tested (including new `/thresholds` endpoints)
+- CLI functionality tests
+- Error handling and edge cases
+- Integration workflow tests
+
+### CI/CD
+
+Every push and pull request automatically runs:
+- ✅ Tests on Python 3.8, 3.9, 3.10, 3.11, 3.12
+- ✅ Code linting
+- ✅ Coverage checks (minimum 75%)
+- ✅ Package build verification
+
+See [TEST_SUMMARY.md](TEST_SUMMARY.md) for detailed test documentation.
+
+## 🆕 What's New in v1.0.2
+
+- ✅ **Fixed critical bug**: DateTime serialization in error responses
+- ✅ **New endpoint**: `/thresholds` for easier threshold management
+- ✅ **Comprehensive tests**: 63+ test cases covering all functionality
+- ✅ **CI/CD pipeline**: Automated testing on every commit
+- ✅ **78% code coverage**: Major quality improvement
+- ✅ Bug fixes from v1.0.1 (missing import uvicorn)
 
 ## 🆕 What's New in v1.0.1
 

@@ -163,8 +163,21 @@ async def root():
             "cpu": "/cpu",
             "disk": "/disk",
             "config": "/config",
-            "api_docs": "/api"
+            "api_docs": "/api",
+            "docs": "/docs"
         }
+    }
+
+
+@app.get("/docs", tags=["Info"])
+async def docs():
+    """Documentation page - how to add endpoints to Uptime Kuma."""
+    docs_file = Path(__file__).parent.parent / "ui" / "docs.html"
+    if docs_file.exists():
+        return FileResponse(docs_file)
+    return {
+        "error": "Documentation page not found",
+        "message": "Please refer to the GitHub repository for setup instructions"
     }
 
 
@@ -283,6 +296,22 @@ async def get_config():
     )
 
 
+@app.get("/thresholds", response_model=dict, tags=["Configuration"])
+async def get_thresholds():
+    """
+    Get current thresholds only (simpler endpoint).
+    
+    Returns just the threshold values without other config.
+    """
+    return {
+        "thresholds": {
+            "ram_percent": app_config.thresholds.ram_percent,
+            "cpu_percent": app_config.thresholds.cpu_percent,
+            "disk_percent": app_config.thresholds.disk_percent
+        }
+    }
+
+
 class ThresholdUpdate(BaseModel):
     """Request model for updating thresholds."""
     thresholds: dict
@@ -341,6 +370,16 @@ async def update_config(update: ThresholdUpdate):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             content={"ok": False, "error": f"Failed to update configuration: {str(e)}"}
         )
+
+
+@app.put("/thresholds", tags=["Configuration"])
+async def update_thresholds(update: ThresholdUpdate):
+    """
+    Update monitoring thresholds (alias for /config).
+    
+    Updates are applied in-memory immediately and persisted to config.yaml.
+    """
+    return await update_config(update)
 
 
 def cli():

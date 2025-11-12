@@ -22,6 +22,16 @@ fi
 echo "📦 Checking build tools..."
 pip3 install --quiet --upgrade build twine
 
+# Run tests first
+echo "🧪 Running tests..."
+if ! pytest tests/ -v --tb=short; then
+    echo "❌ Tests failed! Cannot publish with failing tests."
+    exit 1
+fi
+
+echo "✅ All tests passed!"
+echo ""
+
 # Clean old builds
 echo "🧹 Cleaning old builds..."
 rm -rf dist/ build/ *.egg-info app/*.egg-info

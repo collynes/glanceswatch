@@ -12,55 +12,249 @@
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f5f5f5;
-            color: #333;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #ffffff;
             min-height: 100vh;
+            padding: 2rem;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Light mode styles */
+        body.light-mode {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            color: #1a1a1a;
+        }
+
+        body.light-mode .header h1,
+        body.light-mode .header .version {
+            color: #1a1a1a;
+            text-shadow: 0 2px 4px rgba(255,255,255,0.3);
         }
 
         .header {
-            background: #fff;
-            border-bottom: 2px solid #ddd;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            text-align: center;
+            margin-bottom: 3rem;
         }
 
         .header h1 {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #333;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 0.5rem;
         }
 
         .header .version {
-            color: #666;
-            font-size: 0.875rem;
+            color: rgba(255,255,255,0.8);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            padding: 0.5rem;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            gap: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-toggle-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        .theme-toggle-option.active {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        body.light-mode .theme-toggle {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode .theme-toggle-option.active {
+            background: rgba(0, 0, 0, 0.1);
         }
 
         .container {
             max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 2rem;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        /* Circular Metrics Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body.light-mode .metric-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .metric-circle {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 4px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+        }
+
+        body.light-mode .metric-circle {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.15);
+        }
+
+        body.light-mode .metric-label,
+        body.light-mode .metric-value,
+        body.light-mode .metric-unit,
+        body.light-mode .metric-threshold {
+            color: #1a1a1a;
+        }
+
+        .metric-circle.ok {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .metric-circle.critical {
+            border-color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            50% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1;
+        }
+
+        .metric-unit {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 0.25rem;
+        }
+
+        .metric-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-threshold {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .metric-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .metric-status.ok {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .metric-status.critical {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
         }
 
         .section {
-            background: #fff;
-            border: 1px solid #ddd;
-            margin-bottom: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
         }
 
         .section-header {
-            background: #f8f8f8;
-            border-bottom: 1px solid #ddd;
-            padding: 0.75rem 1.25rem;
-            font-weight: bold;
-            font-size: 1rem;
-            color: #333;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.25rem 1.5rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: #ffffff;
+        }
+
+        body.light-mode .section-header {
+            background: rgba(0, 0, 0, 0.02);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            color: #1a1a1a;
+        }
+
+        body.light-mode .section {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
         }
 
         .section-body {
-            padding: 1.25rem;
+            padding: 1.5rem;
         }
 
         table {
@@ -70,21 +264,23 @@
 
         table th,
         table td {
-            padding: 0.75rem;
+            padding: 1rem;
             text-align: left;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         table th {
-            background: #f8f8f8;
-            font-weight: bold;
-            color: #333;
+            background: rgba(255, 255, 255, 0.03);
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
             font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         table td {
-            font-size: 0.875rem;
-            color: #555;
+            font-size: 0.9375rem;
+            color: rgba(255, 255, 255, 0.85);
         }
 
         table tr:last-child td {
@@ -92,38 +288,59 @@
         }
 
         .status-ok {
-            color: #28a745;
-            font-weight: bold;
+            color: #10b981;
+            font-weight: 600;
         }
 
         .status-critical {
-            color: #dc3545;
-            font-weight: bold;
+            color: #ef4444;
+            font-weight: 600;
         }
 
         .form-group {
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: #333;
-            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 0.9375rem;
+        }
+
+        body.light-mode .form-group label {
+            color: #1a1a1a;
+        }
+
+        body.light-mode table th,
+        body.light-mode table td {
+            color: #1a1a1a;
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode .slider-container {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        body.light-mode input[type="range"] {
+            background: rgba(0, 0, 0, 0.1);
         }
 
         .slider-container {
             display: flex;
             align-items: center;
             gap: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 12px;
         }
 
         input[type="range"] {
             flex: 1;
-            height: 4px;
-            border-radius: 2px;
-            background: #ddd;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.15);
             outline: none;
             -webkit-appearance: none;
             appearance: none;
@@ -132,118 +349,263 @@
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 16px;
-            height: 16px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
-            background: #007bff;
+            background: #ffffff;
             cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
         }
 
         input[type="range"]::-moz-range-thumb {
-            width: 16px;
-            height: 16px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
-            background: #007bff;
+            background: #ffffff;
             cursor: pointer;
             border: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .slider-value {
-            min-width: 50px;
+            min-width: 60px;
             text-align: right;
-            font-weight: bold;
-            color: #333;
-            font-size: 0.875rem;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 1.125rem;
         }
 
         .button-group {
             display: flex;
-            gap: 0.5rem;
-            margin-top: 1.5rem;
+            gap: 1rem;
+            margin-top: 2rem;
         }
 
         button {
-            background: #007bff;
-            color: white;
-            border: 1px solid #0056b3;
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
+            flex: 1;
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 0.875rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: inherit;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        body.light-mode button {
+            background: rgba(0, 0, 0, 0.15);
+            color: #1a1a1a;
+            border-color: rgba(0, 0, 0, 0.2);
         }
 
         button:hover {
-            background: #0056b3;
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        body.light-mode button:hover {
+            background: rgba(0, 0, 0, 0.25);
+            border-color: rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
         }
 
         button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
 
         .btn-success {
-            background: #28a745;
-            border-color: #1e7e34;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: rgba(16, 185, 129, 0.5);
+            color: #ffffff !important;
         }
 
-        .btn-success:hover {
-            background: #1e7e34;
+        body.light-mode .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: rgba(16, 185, 129, 0.5);
+            color: #ffffff !important;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
 
         .btn-secondary {
-            background: #6c757d;
-            border-color: #545b62;
+            background: rgba(148, 163, 184, 0.3);
+            border-color: rgba(148, 163, 184, 0.4);
+            color: #ffffff;
         }
 
-        .btn-secondary:hover {
-            background: #545b62;
+        body.light-mode .btn-secondary {
+            background: rgba(100, 116, 139, 0.2);
+            border-color: rgba(100, 116, 139, 0.3);
+            color: #1a1a1a;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: rgba(148, 163, 184, 0.4);
+        }
+
+        body.light-mode .btn-secondary:hover:not(:disabled) {
+            background: rgba(100, 116, 139, 0.3);
         }
 
         .alert {
-            padding: 0.75rem 1rem;
-            margin-bottom: 1rem;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+            border-radius: 12px;
+            font-size: 0.9375rem;
             border: 1px solid transparent;
-            font-size: 0.875rem;
+            backdrop-filter: blur(5px);
         }
 
         .alert-success {
-            color: #155724;
-            background-color: #d4edda;
-            border-color: #c3e6cb;
+            color: #ffffff;
+            background: rgba(16, 185, 129, 0.2);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        body.light-mode .alert-success {
+            color: #065f46;
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.3);
         }
 
         .alert-error {
-            color: #721c24;
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
+            color: #ffffff;
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        body.light-mode .alert-error {
+            color: #991b1b;
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.3);
         }
 
         .loading {
             text-align: center;
-            padding: 2rem;
-            color: #666;
+            padding: 3rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+        }
+
+        body.light-mode .loading {
+            color: #1a1a1a;
         }
 
         .footer {
             text-align: center;
-            padding: 1rem;
-            color: #999;
-            font-size: 0.75rem;
-            border-top: 1px solid #ddd;
-            margin-top: 2rem;
+            padding: 2rem 1rem 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.875rem;
+        }
+
+        body.light-mode .footer {
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .metric-circle {
+                width: 120px;
+                height: 120px;
+            }
+
+            .metric-value {
+                font-size: 1.75rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" id="themeToggle">
+        <div class="theme-toggle-option" data-theme="dark">🌙</div>
+        <div class="theme-toggle-option active" data-theme="light">☀️</div>
+    </div>
+
     <div class="header">
-        <h1>GlanceWatch System Monitor</h1>
-        <span class="version">v1.0.1</span>
+        <h1>GlanceWatch</h1>
+        <span class="version">v1.0.4</span>
     </div>
 
     <div class="container">
-        <!-- System Status Section -->
+        <!-- Circular Metrics Grid -->
+        <div class="metrics-grid" id="metricsGrid">
+            <div class="metric-card">
+                <div id="ramCircle" class="metric-circle">
+                    <div>
+                        <div class="metric-value" id="ramValueCircle">--</div>
+                        <div class="metric-unit">RAM</div>
+                    </div>
+                </div>
+                <div class="metric-label">Memory Usage</div>
+                <div class="metric-threshold" id="ramThresholdText">Threshold: --</div>
+                <span class="metric-status" id="ramStatusBadge">--</span>
+            </div>
+
+            <div class="metric-card">
+                <div id="cpuCircle" class="metric-circle">
+                    <div>
+                        <div class="metric-value" id="cpuValueCircle">--</div>
+                        <div class="metric-unit">CPU</div>
+                    </div>
+                </div>
+                <div class="metric-label">Processor Usage</div>
+                <div class="metric-threshold" id="cpuThresholdText">Threshold: --</div>
+                <span class="metric-status" id="cpuStatusBadge">--</span>
+            </div>
+
+            <div class="metric-card">
+                <div id="diskCircle" class="metric-circle">
+                    <div>
+                        <div class="metric-value" id="diskValueCircle">--</div>
+                        <div class="metric-unit">DISK</div>
+                    </div>
+                </div>
+                <div class="metric-label">Storage Usage</div>
+                <div class="metric-threshold" id="diskThresholdText">Threshold: --</div>
+                <span class="metric-status" id="diskStatusBadge">--</span>
+            </div>
+        </div>
+
+        <!-- System Status Section (Table View) -->
         <div class="section">
-            <div class="section-header">System Status</div>
+            <div class="section-header">Detailed System Status</div>
             <div class="section-body">
                 <div id="statusLoading" class="loading">Loading system metrics...</div>
                 <div id="statusContent" style="display: none;">
@@ -277,8 +639,8 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div style="margin-top: 1rem; color: #666; font-size: 0.75rem;">
-                        Last updated: <span id="lastUpdate">--</span>
+                    <div style="margin-top: 1.5rem; color: rgba(255,255,255,0.7); font-size: 0.875rem;">
+                        Last updated: <span id="lastUpdate">--</span> • Auto-refresh: 5s
                     </div>
                 </div>
             </div>
@@ -326,12 +688,70 @@
         </div>
 
         <div class="footer">
-            GlanceWatch v1.0.1 &copy; 2025 | System Monitoring Tool
+            <div style="margin-bottom: 0.75rem;">
+                <a href="/docs" style="color: inherit; text-decoration: none; margin: 0 1rem; transition: opacity 0.3s ease;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+                    Documentation
+                </a>
+                <span style="opacity: 0.5;">•</span>
+                <a href="/api" style="color: inherit; text-decoration: none; margin: 0 1rem; transition: opacity 0.3s ease;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+                    API Swagger
+                </a>
+                <span style="opacity: 0.5;">•</span>
+                <a href="/health" style="color: inherit; text-decoration: none; margin: 0 1rem; transition: opacity 0.3s ease;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+                    Health Check
+                </a>
+                <span style="opacity: 0.5;">•</span>
+                <a href="http://localhost:61208" target="_blank" style="color: inherit; text-decoration: none; margin: 0 1rem; transition: opacity 0.3s ease;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+                    Glances
+                </a>
+                <span style="opacity: 0.5;">•</span>
+                <a href="http://localhost:3001" target="_blank" style="color: inherit; text-decoration: none; margin: 0 1rem; transition: opacity 0.3s ease;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">
+                    Uptime Kuma
+                </a>
+            </div>
+            <div>
+                GlanceWatch v1.0.4 • System Monitoring Dashboard
+            </div>
         </div>
     </div>
 
 
     <script>
+        // Theme Management
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        
+        function setTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.add('light-mode');
+            } else {
+                document.body.classList.remove('light-mode');
+            }
+            localStorage.setItem('theme', theme);
+            
+            // Update active toggle option
+            document.querySelectorAll('.theme-toggle-option').forEach(option => {
+                const optionTheme = option.getAttribute('data-theme');
+                if (optionTheme === theme) {
+                    option.classList.add('active');
+                } else {
+                    option.classList.remove('active');
+                }
+            });
+        }
+        
+        // Initialize theme on page load
+        setTheme(savedTheme);
+        
+        // Theme toggle click handler
+        themeToggle.addEventListener('click', (e) => {
+            const clickedOption = e.target.closest('.theme-toggle-option');
+            if (clickedOption) {
+                const theme = clickedOption.getAttribute('data-theme');
+                setTheme(theme);
+            }
+        });
+
         // State
         let originalConfig = {};
         let currentConfig = {};
@@ -372,25 +792,47 @@
         async function loadMetrics() {
             try {
                 const response = await fetch('/status');
-                if (!response.ok) {
+                // Accept both 200 (OK) and 503 (threshold exceeded) as valid responses
+                if (!response.ok && response.status !== 503) {
                     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                 }
                 const data = await response.json();
                 
-                // Update RAM
+                // Update RAM - Circular
+                document.getElementById('ramValueCircle').textContent = data.ram.value.toFixed(1) + '%';
+                document.getElementById('ramThresholdText').textContent = 'Threshold: ' + data.ram.threshold + '%';
+                document.getElementById('ramStatusBadge').textContent = data.ram.ok ? 'OK' : 'CRITICAL';
+                document.getElementById('ramStatusBadge').className = 'metric-status ' + (data.ram.ok ? 'ok' : 'critical');
+                document.getElementById('ramCircle').className = 'metric-circle ' + (data.ram.ok ? 'ok' : 'critical');
+                
+                // Update RAM - Table
                 document.getElementById('ramValue').textContent = data.ram.value.toFixed(1) + '%';
                 document.getElementById('ramThreshold').textContent = data.ram.threshold + '%';
                 document.getElementById('ramStatus').textContent = data.ram.ok ? 'OK' : 'CRITICAL';
                 document.getElementById('ramStatus').className = data.ram.ok ? 'status-ok' : 'status-critical';
                 
-                // Update CPU
+                // Update CPU - Circular
+                document.getElementById('cpuValueCircle').textContent = data.cpu.value.toFixed(1) + '%';
+                document.getElementById('cpuThresholdText').textContent = 'Threshold: ' + data.cpu.threshold + '%';
+                document.getElementById('cpuStatusBadge').textContent = data.cpu.ok ? 'OK' : 'CRITICAL';
+                document.getElementById('cpuStatusBadge').className = 'metric-status ' + (data.cpu.ok ? 'ok' : 'critical');
+                document.getElementById('cpuCircle').className = 'metric-circle ' + (data.cpu.ok ? 'ok' : 'critical');
+                
+                // Update CPU - Table
                 document.getElementById('cpuValue').textContent = data.cpu.value.toFixed(1) + '%';
                 document.getElementById('cpuThreshold').textContent = data.cpu.threshold + '%';
                 document.getElementById('cpuStatus').textContent = data.cpu.ok ? 'OK' : 'CRITICAL';
                 document.getElementById('cpuStatus').className = data.cpu.ok ? 'status-ok' : 'status-critical';
                 
-                // Update Disk
+                // Update Disk - Circular
                 const diskValue = data.disk.disks.length > 0 ? data.disk.disks[0].percent_used.toFixed(1) + '%' : 'N/A';
+                document.getElementById('diskValueCircle').textContent = diskValue;
+                document.getElementById('diskThresholdText').textContent = 'Threshold: ' + data.disk.threshold + '%';
+                document.getElementById('diskStatusBadge').textContent = data.disk.ok ? 'OK' : 'CRITICAL';
+                document.getElementById('diskStatusBadge').className = 'metric-status ' + (data.disk.ok ? 'ok' : 'critical');
+                document.getElementById('diskCircle').className = 'metric-circle ' + (data.disk.ok ? 'ok' : 'critical');
+                
+                // Update Disk - Table
                 document.getElementById('diskValue').textContent = diskValue;
                 document.getElementById('diskThreshold').textContent = data.disk.threshold + '%';
                 document.getElementById('diskStatus').textContent = data.disk.ok ? 'OK' : 'CRITICAL';
@@ -404,7 +846,7 @@
             } catch (error) {
                 console.error('Metrics load error:', error);
                 document.getElementById('statusLoading').innerHTML = 
-                    '<p style="color: #dc3545;">Failed to load metrics: ' + error.message + '</p>';
+                    '<p style="color: rgba(255,255,255,0.9);">Failed to load metrics: ' + error.message + '</p>';
             }
         }
 
@@ -465,8 +907,8 @@
                 showSuccess('Configuration applied successfully');
                 document.getElementById('saveButton').textContent = 'Apply Changes';
                 
-                // Reload metrics to show new thresholds
-                loadMetrics();
+                // Immediately reload metrics to show new thresholds
+                await loadMetrics();
             } catch (error) {
                 showError('Failed to save configuration: ' + error.message);
                 document.getElementById('saveButton').textContent = 'Apply Changes';

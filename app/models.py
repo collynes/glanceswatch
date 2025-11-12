@@ -64,4 +64,4 @@ class ErrorResponse(BaseModel):
     ok: bool = Field(default=False, description="Always false for errors")
     error: str = Field(description="Error message")
     detail: Optional[str] = Field(default=None, description="Additional error details")
-    timestamp: datetime = Field(default_factory=datetime.utcnow, description="Error timestamp")
+    timestamp: str = Field(default_factory=lambda: datetime.utcnow().isoformat(), description="Error timestamp in ISO format")

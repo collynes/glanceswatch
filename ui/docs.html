@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlanceWatch - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        body.light-mode {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+            color: #1a1a1a;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            padding: 0.5rem;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            gap: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-toggle-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        .theme-toggle-option.active {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        body.light-mode .theme-toggle {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode .theme-toggle-option.active {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header .subtitle {
+            font-size: 1.125rem;
+            opacity: 0.8;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateX(-5px);
+        }
+
+        body.light-mode .back-link {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode .back-link:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(5px);
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        body.light-mode .section {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.25rem 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        body.light-mode .section h2 {
+            background: rgba(0, 0, 0, 0.02);
+            border-bottom-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .section-content {
+            padding: 1.5rem;
+        }
+
+        .section h3 {
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .section p {
+            margin-bottom: 1rem;
+        }
+
+        .section ul, .section ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section li {
+            margin-bottom: 0.5rem;
+        }
+
+        code {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        body.light-mode code {
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        pre {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        body.light-mode pre {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.15);
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+        }
+
+        .endpoint-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .endpoint-box strong {
+            color: #10b981;
+        }
+
+        .note {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        body.light-mode .note {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        body.light-mode .warning {
+            background: rgba(245, 158, 11, 0.15);
+        }
+
+        .screenshot {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .screenshot img {
+            max-width: 100%;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .step {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .step::before {
+            content: attr(data-step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #10b981;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        table th,
+        table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        table th {
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: 600;
+        }
+
+        body.light-mode table th,
+        body.light-mode table td {
+            border-bottom-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode table th {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .step {
+                padding-left: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" id="themeToggle">
+        <div class="theme-toggle-option" data-theme="dark">🌙</div>
+        <div class="theme-toggle-option active" data-theme="light">☀️</div>
+    </div>
+
+    <div class="container">
+        <a href="/" class="back-link">← Back to Dashboard</a>
+
+        <div class="header">
+            <h1>GlanceWatch Documentation</h1>
+            <p class="subtitle">Setting up Uptime Kuma monitoring</p>
+        </div>
+
+        <!-- Overview Section -->
+        <div class="section">
+            <h2>📊 Overview</h2>
+            <div class="section-content">
+                <p>GlanceWatch provides HTTP endpoints that Uptime Kuma can monitor to track your system's health. When resource usage exceeds your configured thresholds, GlanceWatch returns an HTTP 503 status code, triggering alerts in Uptime Kuma.</p>
+                
+                <div class="note">
+                    <strong>💡 Key Feature:</strong> GlanceWatch uses HTTP 503 (Service Unavailable) status codes to signal threshold violations. This allows Uptime Kuma to automatically detect and alert when your system resources are running low.
+                </div>
+            </div>
+        </div>
+
+        <!-- Available Endpoints Section -->
+        <div class="section">
+            <h2>🔗 Available API Endpoints</h2>
+            <div class="section-content">
+                <p>GlanceWatch provides several monitoring endpoints. Use these URLs when adding monitors to Uptime Kuma:</p>
+
+                <h3>Primary Monitoring Endpoint</h3>
+                <div class="endpoint-box">
+                    <strong>GET</strong> <code>http://localhost:8000/status</code>
+                    <p style="margin-top: 0.5rem;">Monitors all system metrics (RAM, CPU, and Disk). Returns HTTP 503 if any threshold is exceeded.</p>
+                </div>
+
+                <h3>Individual Metric Endpoints</h3>
+                <div class="endpoint-box">
+                    <strong>GET</strong> <code>http://localhost:8000/ram</code>
+                    <p style="margin-top: 0.5rem;">Monitors RAM usage only. Returns HTTP 503 if RAM threshold is exceeded.</p>
+                </div>
+
+                <div class="endpoint-box">
+                    <strong>GET</strong> <code>http://localhost:8000/cpu</code>
+                    <p style="margin-top: 0.5rem;">Monitors CPU usage only. Returns HTTP 503 if CPU threshold is exceeded.</p>
+                </div>
+
+                <div class="endpoint-box">
+                    <strong>GET</strong> <code>http://localhost:8000/disk</code>
+                    <p style="margin-top: 0.5rem;">Monitors disk usage only. Returns HTTP 503 if disk threshold is exceeded.</p>
+                </div>
+
+                <h3>Health Check Endpoint</h3>
+                <div class="endpoint-box">
+                    <strong>GET</strong> <code>http://localhost:8000/health</code>
+                    <p style="margin-top: 0.5rem;">Basic health check. Always returns HTTP 200 when the service is running.</p>
+                </div>
+
+                <h3>Response Format</h3>
+                <p>All endpoints return JSON responses. Example from <code>/status</code>:</p>
+                <pre><code>{
+  "ok": false,
+  "ram": {
+    "ok": false,
+    "value": 85.2,
+    "threshold": 80
+  },
+  "cpu": {
+    "ok": true,
+    "value": 45.3,
+    "threshold": 80
+  },
+  "disk": {
+    "ok": true,
+    "threshold": 85,
+    "disks": [...]
+  },
+  "last_check": "2025-11-12T10:30:45.123456"
+}</code></pre>
+            </div>
+        </div>
+
+        <!-- Uptime Kuma Setup Section -->
+        <div class="section">
+            <h2>⚙️ Adding Monitors to Uptime Kuma</h2>
+            <div class="section-content">
+                <p>Follow these steps to add GlanceWatch monitoring to Uptime Kuma:</p>
+
+                <div class="step" data-step="1">
+                    <h3>Access Uptime Kuma</h3>
+                    <p>Open Uptime Kuma in your browser:</p>
+                    <pre><code>http://localhost:3001</code></pre>
+                    <p>Log in with your credentials.</p>
+                </div>
+
+                <div class="step" data-step="2">
+                    <h3>Add New Monitor</h3>
+                    <p>Click the <strong>"Add New Monitor"</strong> button (usually a + icon in the top right).</p>
+                </div>
+
+                <div class="step" data-step="3">
+                    <h3>Configure Monitor Type</h3>
+                    <p>Select <strong>"HTTP(s)"</strong> as the monitor type.</p>
+                </div>
+
+                <div class="step" data-step="4">
+                    <h3>Fill in Monitor Details</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Field</th>
+                                <th>Value</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Friendly Name</strong></td>
+                                <td>System Resources</td>
+                                <td>Display name for the monitor</td>
+                            </tr>
+                            <tr>
+                                <td><strong>URL</strong></td>
+                                <td><code>http://localhost:8000/status</code></td>
+                                <td>The GlanceWatch endpoint to monitor</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Heartbeat Interval</strong></td>
+                                <td>60 seconds</td>
+                                <td>How often to check (recommended: 60s)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Retries</strong></td>
+                                <td>2</td>
+                                <td>Number of retries before marking as down</td>
+                            </tr>
+                            <tr>
+                                <td><strong>HTTP Method</strong></td>
+                                <td>GET</td>
+                                <td>Default HTTP method</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Expected Status Code</strong></td>
+                                <td>200-299</td>
+                                <td>Any 2xx status = healthy</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="step" data-step="5">
+                    <h3>Configure Notifications (Optional)</h3>
+                    <p>Scroll down to the <strong>"Notifications"</strong> section and select how you want to be alerted:</p>
+                    <ul>
+                        <li><strong>Email</strong> - Receive email alerts</li>
+                        <li><strong>Slack</strong> - Post to a Slack channel</li>
+                        <li><strong>Discord</strong> - Send Discord messages</li>
+                        <li><strong>Telegram</strong> - Telegram bot notifications</li>
+                        <li>And many more...</li>
+                    </ul>
+                </div>
+
+                <div class="step" data-step="6">
+                    <h3>Save Monitor</h3>
+                    <p>Click <strong>"Save"</strong> at the bottom of the form. Uptime Kuma will immediately start monitoring your endpoint.</p>
+                </div>
+
+                <div class="warning">
+                    <strong>⚠️ Important:</strong> Make sure GlanceWatch is running before adding monitors. You can check if it's running by visiting <a href="http://localhost:8000" style="color: #f59e0b;">http://localhost:8000</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Configuration Section -->
+        <div class="section">
+            <h2>🔧 Advanced Configuration</h2>
+            <div class="section-content">
+                <h3>Monitoring Individual Metrics</h3>
+                <p>Instead of monitoring all resources with <code>/status</code>, you can create separate monitors for each metric:</p>
+                
+                <ul>
+                    <li><strong>RAM Monitor:</strong> <code>http://localhost:8000/ram</code></li>
+                    <li><strong>CPU Monitor:</strong> <code>http://localhost:8000/cpu</code></li>
+                    <li><strong>Disk Monitor:</strong> <code>http://localhost:8000/disk</code></li>
+                </ul>
+
+                <p>This gives you more granular control and separate alerts for each resource type.</p>
+
+                <h3>Adjusting Check Intervals</h3>
+                <p>For production systems:</p>
+                <ul>
+                    <li><strong>Critical systems:</strong> 30-60 second intervals</li>
+                    <li><strong>Standard systems:</strong> 60-120 second intervals</li>
+                    <li><strong>Non-critical systems:</strong> 300 second (5 minute) intervals</li>
+                </ul>
+
+                <h3>Remote Monitoring</h3>
+                <p>If GlanceWatch is running on a remote server, replace <code>localhost</code> with the server's IP address or hostname:</p>
+                <pre><code>http://192.168.1.100:8000/status
+http://monitoring.example.com:8000/status</code></pre>
+
+                <div class="note">
+                    <strong>🔒 Security Tip:</strong> If monitoring over the internet, consider using a reverse proxy with HTTPS (nginx, Caddy, etc.) to secure the connection.
+                </div>
+            </div>
+        </div>
+
+        <!-- Troubleshooting Section -->
+        <div class="section">
+            <h2>🔍 Troubleshooting</h2>
+            <div class="section-content">
+                <h3>Monitor Shows "Down"</h3>
+                <ol>
+                    <li>Verify GlanceWatch is running: <code>ps aux | grep glancewatch</code></li>
+                    <li>Check if the port is correct (default: 8000)</li>
+                    <li>Test the endpoint manually: <code>curl http://localhost:8000/status</code></li>
+                    <li>Check GlanceWatch logs for errors</li>
+                </ol>
+
+                <h3>False Positives (Alerts when system is fine)</h3>
+                <ol>
+                    <li>Adjust thresholds in the GlanceWatch dashboard</li>
+                    <li>Increase the retry count in Uptime Kuma (to avoid transient spikes)</li>
+                    <li>Verify Glances is running: <code>ps aux | grep glances</code></li>
+                </ol>
+
+                <h3>Not Receiving Alerts</h3>
+                <ol>
+                    <li>Check notification settings in Uptime Kuma</li>
+                    <li>Test notifications using the "Test" button</li>
+                    <li>Verify the monitor is set to send notifications</li>
+                    <li>Manually trigger an alert by setting a very low threshold (e.g., RAM 1%)</li>
+                </ol>
+
+                <h3>Connection Refused Errors</h3>
+                <ol>
+                    <li>Ensure GlanceWatch is listening on <code>0.0.0.0</code> not <code>127.0.0.1</code></li>
+                    <li>Check firewall rules allow port 8000</li>
+                    <li>If using Docker, verify port mappings</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- API Reference Section -->
+        <div class="section">
+            <h2>📖 API Reference</h2>
+            <div class="section-content">
+                <p>For complete API documentation, visit:</p>
+                <div class="endpoint-box">
+                    <strong>Swagger UI:</strong> <a href="/api" style="color: #10b981;">http://localhost:8000/api</a>
+                </div>
+
+                <h3>Status Codes</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Status Code</th>
+                            <th>Meaning</th>
+                            <th>When It Occurs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>200 OK</strong></td>
+                            <td>All systems normal</td>
+                            <td>All metrics below thresholds</td>
+                        </tr>
+                        <tr>
+                            <td><strong>503 Service Unavailable</strong></td>
+                            <td>Threshold exceeded</td>
+                            <td>One or more metrics above threshold</td>
+                        </tr>
+                        <tr>
+                            <td><strong>500 Internal Server Error</strong></td>
+                            <td>Server error</td>
+                            <td>Configuration or connection issues</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 2rem 0; opacity: 0.7; font-size: 0.875rem;">
+            <p>GlanceWatch v1.0.4 • <a href="/" style="color: inherit; text-decoration: none;">Back to Dashboard</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Theme Management (same as main UI)
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        
+        function setTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.add('light-mode');
+            } else {
+                document.body.classList.remove('light-mode');
+            }
+            localStorage.setItem('theme', theme);
+            
+            document.querySelectorAll('.theme-toggle-option').forEach(option => {
+                const optionTheme = option.getAttribute('data-theme');
+                if (optionTheme === theme) {
+                    option.classList.add('active');
+                } else {
+                    option.classList.remove('active');
+                }
+            });
+        }
+        
+        setTheme(savedTheme);
+        
+        themeToggle.addEventListener('click', (e) => {
+            const clickedOption = e.target.closest('.theme-toggle-option');
+            if (clickedOption) {
+                const theme = clickedOption.getAttribute('data-theme');
+                setTheme(theme);
+            }
+        });
+    </script>
+</body>
+</html>
