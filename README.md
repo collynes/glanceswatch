@@ -24,6 +24,32 @@
 
 ## 🚀 Quick Start
 
+### Option 1: Background Service (Recommended for Production)
+
+**Linux/Ubuntu (systemd):**
+```bash
+# One-command install as background service
+curl -sSL https://raw.githubusercontent.com/collinskramp/glanceswatch/main/install-service.sh | bash
+
+# Service automatically starts on boot and runs in background
+```
+
+**Simple background start (nohup):**
+```bash
+# Install
+pip install glancewatch
+
+# Start in background
+nohup glancewatch > /dev/null 2>&1 &
+
+# Check if running
+ps aux | grep glancewatch
+```
+
+See [BACKGROUND-SERVICE.md](BACKGROUND-SERVICE.md) for complete guide including screen/tmux options.
+
+### Option 2: Foreground (Development)
+
 ```bash
 # Install GlanceWatch (automatically installs Glances dependency)
 pip install glancewatch

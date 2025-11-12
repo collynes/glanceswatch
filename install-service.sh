@@ -1,6 +1,6 @@
 #!/bin/bash
 # GlanceWatch Auto-Setup Script
-# This script installs GlanceWatch as a systemd service
+# This script installs GlanceWatch as a systemd service that runs in the background
 
 set -e
 
@@ -8,6 +8,7 @@ set -e
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 echo -e "${GREEN}======================================${NC}"
@@ -18,13 +19,20 @@ echo ""
 # Check if running on Linux
 if [[ "$OSTYPE" != "linux-gnu"* ]]; then
     echo -e "${RED}Error: This script is for Linux systems only.${NC}"
-    echo "For other systems, please run 'glancewatch' manually."
+    echo ""
+    echo -e "${YELLOW}Alternative: Run in background with nohup${NC}"
+    echo "  nohup glancewatch > /dev/null 2>&1 &"
+    echo ""
     exit 1
 fi
 
 # Check if systemd is available
 if ! command -v systemctl &> /dev/null; then
-    echo -e "${RED}Error: systemd not found. Please run 'glancewatch' manually.${NC}"
+    echo -e "${YELLOW}Warning: systemd not found.${NC}"
+    echo ""
+    echo -e "${YELLOW}Alternative: Run in background with nohup${NC}"
+    echo "  nohup glancewatch > /dev/null 2>&1 &"
+    echo ""
     exit 1
 fi
 
@@ -38,11 +46,19 @@ else
 fi
 
 # Determine the correct path to glancewatch binary
-GLANCEWATCH_BIN=$(which glancewatch)
+GLANCEWATCH_BIN=$(which glancewatch 2>/dev/null || echo "$HOME/.local/bin/glancewatch")
 echo "GlanceWatch binary: $GLANCEWATCH_BIN"
+
+# Verify binary exists
+if [ ! -f "$GLANCEWATCH_BIN" ]; then
+    echo -e "${RED}Error: glancewatch binary not found at $GLANCEWATCH_BIN${NC}"
+    echo "Please ensure GlanceWatch is installed correctly."
+    exit 1
+fi
 
 # Get current user
 CURRENT_USER=$(whoami)
+CURRENT_GROUP=$(id -gn)
 
 # Create systemd service file
 SERVICE_FILE="/tmp/glancewatch.service"
@@ -55,10 +71,10 @@ Wants=network-online.target
 [Service]
 Type=simple
 User=$CURRENT_USER
-Group=$CURRENT_USER
+Group=$CURRENT_GROUP
 WorkingDirectory=$HOME
 Environment="PATH=$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin"
-ExecStart=$GLANCEWATCH_BIN
+ExecStart=$GLANCEWATCH_BIN --quiet
 Restart=always
 RestartSec=10
 StandardOutput=journal
