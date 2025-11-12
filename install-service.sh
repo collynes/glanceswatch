@@ -1,6 +1,6 @@
 #!/bin/bash
 # GlanceWatch Auto-Setup Script
-# This script installs GlanceWatch as a systemd service that runs in the background
+# Automatically installs and starts GlanceWatch as a background service
 
 set -e
 
@@ -16,53 +16,53 @@ echo -e "${GREEN}  GlanceWatch Auto-Setup${NC}"
 echo -e "${GREEN}======================================${NC}"
 echo ""
 
-# Check if running on Linux
-if [[ "$OSTYPE" != "linux-gnu"* ]]; then
-    echo -e "${RED}Error: This script is for Linux systems only.${NC}"
-    echo ""
-    echo -e "${YELLOW}Alternative: Run in background with nohup${NC}"
-    echo "  nohup glancewatch > /dev/null 2>&1 &"
-    echo ""
-    exit 1
-fi
-
-# Check if systemd is available
-if ! command -v systemctl &> /dev/null; then
-    echo -e "${YELLOW}Warning: systemd not found.${NC}"
-    echo ""
-    echo -e "${YELLOW}Alternative: Run in background with nohup${NC}"
-    echo "  nohup glancewatch > /dev/null 2>&1 &"
-    echo ""
-    exit 1
-fi
-
 # Install GlanceWatch if not already installed
 if ! command -v glancewatch &> /dev/null; then
-    echo -e "${YELLOW}Installing GlanceWatch...${NC}"
+    echo -e "${YELLOW}📦 Installing GlanceWatch...${NC}"
     pip install --user glancewatch
     echo -e "${GREEN}✓ GlanceWatch installed${NC}"
+    echo ""
 else
-    echo -e "${GREEN}✓ GlanceWatch already installed${NC}"
+    echo -e "${YELLOW}📦 Upgrading GlanceWatch to latest version...${NC}"
+    pip install --upgrade --user glancewatch
+    echo -e "${GREEN}✓ GlanceWatch upgraded${NC}"
+    echo ""
 fi
 
 # Determine the correct path to glancewatch binary
 GLANCEWATCH_BIN=$(which glancewatch 2>/dev/null || echo "$HOME/.local/bin/glancewatch")
-echo "GlanceWatch binary: $GLANCEWATCH_BIN"
 
 # Verify binary exists
 if [ ! -f "$GLANCEWATCH_BIN" ]; then
-    echo -e "${RED}Error: glancewatch binary not found at $GLANCEWATCH_BIN${NC}"
-    echo "Please ensure GlanceWatch is installed correctly."
-    exit 1
+    # Try to find it in common locations
+    if [ -f "$HOME/.local/bin/glancewatch" ]; then
+        GLANCEWATCH_BIN="$HOME/.local/bin/glancewatch"
+        export PATH="$HOME/.local/bin:$PATH"
+    else
+        echo -e "${RED}❌ Error: glancewatch binary not found${NC}"
+        echo "Expected location: $HOME/.local/bin/glancewatch"
+        echo ""
+        echo "Try adding to PATH:"
+        echo "  export PATH=\"\$HOME/.local/bin:\$PATH\""
+        exit 1
+    fi
 fi
 
-# Get current user
-CURRENT_USER=$(whoami)
-CURRENT_GROUP=$(id -gn)
+echo -e "${BLUE}GlanceWatch binary: $GLANCEWATCH_BIN${NC}"
+echo ""
 
-# Create systemd service file
-SERVICE_FILE="/tmp/glancewatch.service"
-cat > "$SERVICE_FILE" << EOF
+# Check if running on Linux with systemd
+if [[ "$OSTYPE" == "linux-gnu"* ]] && command -v systemctl &> /dev/null; then
+    echo -e "${YELLOW}🔧 Detected systemd - installing as system service...${NC}"
+    echo ""
+    
+    # Get current user
+    CURRENT_USER=$(whoami)
+    CURRENT_GROUP=$(id -gn)
+
+    # Create systemd service file
+    SERVICE_FILE="/tmp/glancewatch.service"
+    cat > "$SERVICE_FILE" << EOF
 [Unit]
 Description=GlanceWatch - System Monitoring Dashboard
 After=network.target
@@ -92,43 +92,114 @@ ReadWritePaths=$HOME/.config/glancewatch
 WantedBy=multi-user.target
 EOF
 
-# Install the service
-echo -e "${YELLOW}Installing systemd service...${NC}"
-sudo cp "$SERVICE_FILE" /etc/systemd/system/glancewatch.service
-sudo systemctl daemon-reload
-echo -e "${GREEN}✓ Service file installed${NC}"
+    # Install the service
+    echo -e "${YELLOW}Installing systemd service...${NC}"
+    sudo cp "$SERVICE_FILE" /etc/systemd/system/glancewatch.service
+    sudo systemctl daemon-reload
+    echo -e "${GREEN}✓ Service file installed${NC}"
 
-# Enable and start the service
-echo -e "${YELLOW}Enabling and starting GlanceWatch service...${NC}"
-sudo systemctl enable glancewatch.service
-sudo systemctl start glancewatch.service
-echo -e "${GREEN}✓ Service started${NC}"
+    # Stop any existing glancewatch processes
+    if pgrep -f "glancewatch" > /dev/null; then
+        echo -e "${YELLOW}Stopping existing GlanceWatch processes...${NC}"
+        pkill -f glancewatch || true
+        sleep 2
+    fi
 
-# Wait a moment for service to start
-sleep 2
+    # Enable and start the service
+    echo -e "${YELLOW}Enabling and starting GlanceWatch service...${NC}"
+    sudo systemctl enable glancewatch.service
+    sudo systemctl start glancewatch.service
+    echo -e "${GREEN}✓ Service started${NC}"
+    echo ""
 
-# Check service status
-if systemctl is-active --quiet glancewatch.service; then
-    echo ""
-    echo -e "${GREEN}======================================${NC}"
-    echo -e "${GREEN}  ✓ GlanceWatch is running!${NC}"
-    echo -e "${GREEN}======================================${NC}"
-    echo ""
-    echo "Service status:"
-    sudo systemctl status glancewatch.service --no-pager -l
-    echo ""
-    echo -e "${GREEN}Access the dashboard at:${NC}"
-    echo "  http://localhost:8000"
-    echo "  http://$(hostname -I | awk '{print $1}'):8000"
-    echo ""
-    echo "Useful commands:"
-    echo "  sudo systemctl status glancewatch   # Check status"
-    echo "  sudo systemctl stop glancewatch     # Stop service"
-    echo "  sudo systemctl start glancewatch    # Start service"
-    echo "  sudo systemctl restart glancewatch  # Restart service"
-    echo "  sudo journalctl -u glancewatch -f   # View logs"
+    # Wait a moment for service to start
+    sleep 2
+
+    # Check service status
+    if systemctl is-active --quiet glancewatch.service; then
+        echo -e "${GREEN}======================================${NC}"
+        echo -e "${GREEN}  ✓ GlanceWatch is running!${NC}"
+        echo -e "${GREEN}======================================${NC}"
+        echo ""
+        echo -e "${BLUE}Service Info:${NC}"
+        echo "  • Runs automatically on boot"
+        echo "  • Restarts automatically if crashes"
+        echo "  • Logs to systemd journal"
+        echo ""
+        echo -e "${GREEN}Access the dashboard:${NC}"
+        echo "  http://localhost:8000"
+        if command -v hostname &> /dev/null; then
+            EXTERNAL_IP=$(hostname -I 2>/dev/null | awk '{print $1}')
+            if [ -n "$EXTERNAL_IP" ]; then
+                echo "  http://$EXTERNAL_IP:8000"
+            fi
+        fi
+        echo ""
+        echo -e "${YELLOW}Useful commands:${NC}"
+        echo "  ${BLUE}sudo systemctl status glancewatch${NC}   # Check status"
+        echo "  ${BLUE}sudo systemctl stop glancewatch${NC}     # Stop service"
+        echo "  ${BLUE}sudo systemctl restart glancewatch${NC}  # Restart service"
+        echo "  ${BLUE}sudo journalctl -u glancewatch -f${NC}   # View logs"
+    else
+        echo -e "${RED}❌ Service failed to start${NC}"
+        echo "Check logs: sudo journalctl -u glancewatch -xe"
+        exit 1
+    fi
+
 else
-    echo -e "${RED}Error: Service failed to start${NC}"
-    echo "Check logs with: sudo journalctl -u glancewatch -xe"
-    exit 1
+    # Fallback to nohup method
+    echo -e "${YELLOW}🔧 systemd not available - using nohup background process...${NC}"
+    echo ""
+    
+    # Stop any existing glancewatch processes
+    if pgrep -f "glancewatch" > /dev/null; then
+        echo -e "${YELLOW}Stopping existing GlanceWatch processes...${NC}"
+        pkill -f glancewatch || true
+        sleep 2
+    fi
+    
+    # Start with nohup
+    echo -e "${YELLOW}Starting GlanceWatch in background...${NC}"
+    nohup $GLANCEWATCH_BIN > /dev/null 2>&1 &
+    PID=$!
+    
+    # Wait a moment
+    sleep 2
+    
+    # Check if it started
+    if ps -p $PID > /dev/null 2>&1; then
+        echo -e "${GREEN}✓ GlanceWatch started successfully!${NC}"
+        echo ""
+        echo -e "${GREEN}======================================${NC}"
+        echo -e "${GREEN}  ✓ GlanceWatch is running!${NC}"
+        echo -e "${GREEN}======================================${NC}"
+        echo ""
+        echo -e "${BLUE}Process Info:${NC}"
+        echo "  • PID: $PID"
+        echo "  • Running in background"
+        echo "  • Survives terminal close"
+        echo ""
+        echo -e "${GREEN}Access the dashboard:${NC}"
+        echo "  http://localhost:8000"
+        if command -v hostname &> /dev/null; then
+            EXTERNAL_IP=$(hostname -I 2>/dev/null | awk '{print $1}' || hostname)
+            if [ -n "$EXTERNAL_IP" ] && [ "$EXTERNAL_IP" != "hostname" ]; then
+                echo "  http://$EXTERNAL_IP:8000"
+            fi
+        fi
+        echo ""
+        echo -e "${YELLOW}Useful commands:${NC}"
+        echo "  ${BLUE}ps aux | grep glancewatch${NC}          # Check if running"
+        echo "  ${BLUE}pkill -f glancewatch${NC}                # Stop service"
+        echo "  ${BLUE}nohup glancewatch > /dev/null 2>&1 &${NC} # Start again"
+        echo ""
+        echo -e "${YELLOW}⚠️  Note: To auto-start on boot, consider adding systemd${NC}"
+    else
+        echo -e "${RED}❌ Failed to start GlanceWatch${NC}"
+        echo "Try running manually: glancewatch"
+        exit 1
+    fi
 fi
+
+echo ""
+echo -e "${GREEN}✅ Setup complete! You can now close this terminal.${NC}"

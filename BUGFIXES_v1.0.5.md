@@ -5,7 +5,7 @@
 **Version:** 1.0.5  
 **Release Date:** November 12, 2025  
 **PyPI:** https://pypi.org/project/glancewatch/1.0.5/  
-**GitHub:** https://github.com/collinskramp/glanceswatch/releases/tag/v1.0.5
+**GitHub:** https://github.com/collinsKemboi/glanceswatch/releases/tag/v1.0.5
 
 ---
 
@@ -88,7 +88,7 @@ After upgrading, visit:
 ### GitHub
 - **Commit:** 7862ce1
 - **Tag:** v1.0.5
-- **Repository:** https://github.com/collinskramp/glanceswatch
+- **Repository:** https://github.com/collinsKemboi/glanceswatch
 
 ### PyPI
 - **Package:** https://pypi.org/project/glancewatch/1.0.5/

@@ -4,8 +4,8 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109+-green.svg)](https://fastapi.tiangolo.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PyPI version](https://badge.fury.io/py/glancewatch.svg)](https://pypi.org/project/glancewatch/)
-[![Tests](https://github.com/collinskramp/glancewatch/workflows/Tests/badge.svg)](https://github.com/collinskramp/glancewatch/actions)
-[![Coverage](https://img.shields.io/badge/coverage-78%25-brightgreen.svg)](https://github.com/collinskramp/glancewatch)
+[![Tests](https://github.com/collinsKemboi/glancewatch/workflows/Tests/badge.svg)](https://github.com/collinsKemboi/glancewatch/actions)
+[![Coverage](https://img.shields.io/badge/coverage-78%25-brightgreen.svg)](https://github.com/collinsKemboi/glancewatch)
 
 **GlanceWatch** is a lightweight monitoring adapter that bridges [Glances](https://nicolargo.github.io/glances/) system metrics with [Uptime Kuma](https://github.com/louislam/uptime-kuma) and other monitoring tools. It exposes simple HTTP endpoints with configurable thresholds that answer: *"Is my system healthy?"*
 
@@ -29,7 +29,7 @@
 **Linux/Ubuntu (systemd):**
 ```bash
 # One-command install as background service
-curl -sSL https://raw.githubusercontent.com/collinskramp/glanceswatch/main/install-service.sh | bash
+curl -sSL https://raw.githubusercontent.com/collinsKemboi/glanceswatch/main/install-service.sh | bash
 
 # Service automatically starts on boot and runs in background
 ```
@@ -186,7 +186,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 📧 Support
 
-- **Issues**: [GitHub Issues](https://github.com/collinskramp/glancewatch/issues)
+- **Issues**: [GitHub Issues](https://github.com/collinsKemboi/glancewatch/issues)
 - **PyPI**: [pypi.org/project/glancewatch](https://pypi.org/project/glancewatch/)
 
 ---

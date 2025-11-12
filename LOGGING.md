@@ -68,7 +68,7 @@ For production servers, use the systemd service which automatically runs in quie
 
 ```bash
 # Install and enable service
-curl -sSL https://raw.githubusercontent.com/collinskramp/glanceswatch/main/install-service.sh | bash
+curl -sSL https://raw.githubusercontent.com/collinsKemboi/glanceswatch/main/install-service.sh | bash
 
 # View logs only when needed
 sudo journalctl -u glancewatch -f
@@ -142,5 +142,5 @@ INFO:     85.255.20.137:23778 - "GET /status HTTP/1.1" 200 OK
 
 ## Need Help?
 
-- **GitHub Issues:** https://github.com/collinskramp/glanceswatch/issues
-- **Documentation:** https://github.com/collinskramp/glanceswatch#readme
+- **GitHub Issues:** https://github.com/collinsKemboi/glanceswatch/issues
+- **Documentation:** https://github.com/collinsKemboi/glanceswatch#readme

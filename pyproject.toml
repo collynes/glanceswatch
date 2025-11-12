@@ -8,13 +8,13 @@ include-package-data = true
 
 [project]
 name = "glancewatch"
-version = "1.0.8"
+version = "1.0.9"
 description = "Lightweight monitoring adapter bridging Glances metrics with Uptime Kuma"
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
-    {name = "Collins Kramp", email = "collynes@gmail.com"}
+    {name = "Collins Kemboi", email = "collynes@gmail.com"}
 ]
 keywords = ["monitoring", "glances", "uptime-kuma", "metrics", "system-monitoring", "server-monitoring"]
 classifiers = [
