@@ -27,11 +27,17 @@ from .models import (
 )
 from .api.health import router as health_router
 
-# Configure logging
+# Configure logging - Professional, minimal output by default
 logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.WARNING,  # Only show warnings and errors by default
+    format="%(asctime)s - %(levelname)s - %(message)s"
 )
+
+# Suppress noisy third-party loggers
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("httpcore").setLevel(logging.WARNING)
+logging.getLogger("uvicorn.access").setLevel(logging.WARNING)
+
 logger = logging.getLogger(__name__)
 
 # Global config
@@ -55,7 +61,6 @@ def check_glances_running() -> bool:
 def start_glances():
     """Start Glances in web mode"""
     try:
-        logger.info("Starting Glances web server...")
         subprocess.Popen(
             ["glances", "-w"],
             stdout=subprocess.DEVNULL,
@@ -63,13 +68,13 @@ def start_glances():
         )
         # Wait for Glances to start
         time.sleep(3)
-        logger.info("Glances started successfully")
+        return True
     except FileNotFoundError:
         logger.error("Glances not found. Please install: pip install glances")
-        sys.exit(1)
+        return False
     except Exception as e:
         logger.error(f"Failed to start Glances: {e}")
-        sys.exit(1)
+        return False
 
 
 @asynccontextmanager
@@ -81,20 +86,17 @@ async def lifespan(app: FastAPI):
     
     # Startup - Load configuration
     app_config = ConfigLoader.load()
-    logger.info(f"Configuration loaded: Glances={app_config.glances_base_url}")
     
     # Mount UI at root
     ui_dir = Path(__file__).parent / "ui"
     if ui_dir.exists():
         app.mount("/ui", StaticFiles(directory=str(ui_dir), html=True), name="ui")
-        logger.info(f"UI mounted at / (serving from {ui_dir})")
     else:
         logger.warning(f"UI directory not found: {ui_dir}")
     
     yield
     
-    # Shutdown
-    logger.info("Application shutting down")
+    # Shutdown - No logging needed for clean exit
 
 
 # Create FastAPI app
@@ -403,8 +405,31 @@ def cli():
         type=str,
         help="Override the host address (default: from config.yaml or 0.0.0.0)"
     )
+    parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Enable verbose logging (shows all HTTP requests)"
+    )
+    parser.add_argument(
+        "--quiet",
+        "-q",
+        action="store_true",
+        help="Quiet mode (only show errors)"
+    )
     
     args = parser.parse_args()
+    
+    # Configure logging based on verbosity flags
+    if args.quiet:
+        logging.getLogger().setLevel(logging.ERROR)
+        logger.setLevel(logging.ERROR)
+    elif args.verbose:
+        logging.getLogger().setLevel(logging.INFO)
+        logger.setLevel(logging.INFO)
+        logging.getLogger("httpx").setLevel(logging.INFO)
+        logging.getLogger("httpcore").setLevel(logging.INFO)
+        logging.getLogger("uvicorn.access").setLevel(logging.INFO)
     
     # Load configuration
     config = ConfigLoader.load()
@@ -418,26 +443,32 @@ def cli():
     # Check and start Glances if needed (unless --ignore-glances is set)
     if not args.ignore_glances:
         if not check_glances_running():
-            logger.info("Glances is not running. Starting Glances...")
+            if not args.quiet:
+                print("⚠️  Glances is not running. Starting Glances...")
             if not start_glances():
-                logger.warning("Failed to start Glances. Continuing anyway...")
-                logger.warning("You may need to start Glances manually: glances -w")
-        else:
-            logger.info("Glances is already running")
-    else:
-        logger.info("Skipping Glances check (--ignore-glances flag set)")
+                if not args.quiet:
+                    print("⚠️  Failed to start Glances automatically")
+                    print("   You may need to start it manually: glances -w")
+        elif args.verbose:
+            print("✓ Glances is already running")
+    elif args.verbose:
+        print("⚠️  Skipping Glances check (--ignore-glances flag set)")
     
-    logger.info(f"Starting GlanceWatch v{__version__}")
-    logger.info(f"Glances URL: {config.glances_base_url}")
-    logger.info(f"Server: http://{config.host}:{config.port}")
-    logger.info(f"Web UI: http://{'localhost' if config.host == '0.0.0.0' else config.host}:{config.port}/")
-    logger.info(f"API Docs: http://{'localhost' if config.host == '0.0.0.0' else config.host}:{config.port}/api")
+    # Clean, professional startup message
+    if not args.quiet:
+        print(f"\n🚀 GlanceWatch v{__version__} starting...")
+        print(f"📊 Dashboard: http://{'localhost' if config.host == '0.0.0.0' else config.host}:{config.port}/")
+        if args.verbose:
+            print(f"🔧 API Docs:  http://{'localhost' if config.host == '0.0.0.0' else config.host}:{config.port}/api")
+            print(f"🔗 Glances:   {config.glances_base_url}")
+        print("")
     
     uvicorn.run(
         "app.main:app",
         host=config.host,
         port=config.port,
-        log_level=config.log_level.lower()
+        log_level="error" if args.quiet else "warning",
+        access_log=args.verbose
     )
 
 
