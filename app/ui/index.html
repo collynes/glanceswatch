@@ -332,6 +332,21 @@
             background: rgba(0, 0, 0, 0.1);
         }
 
+        body.light-mode input[type="range"]::-webkit-slider-thumb {
+            background: #4CAF50;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        body.light-mode input[type="range"]::-moz-range-thumb {
+            background: #4CAF50;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        body.light-mode .slider-value {
+            color: #1a1a1a;
+            font-weight: 700;
+        }
+
         .slider-container {
             display: flex;
             align-items: center;
@@ -408,7 +423,7 @@
 
         body.light-mode button {
             background: rgba(0, 0, 0, 0.15);
-            color: #1a1a1a;
+            color: #1a1a1a !important;
             border-color: rgba(0, 0, 0, 0.2);
         }
 
@@ -460,7 +475,8 @@
         body.light-mode .btn-secondary {
             background: rgba(100, 116, 139, 0.2);
             border-color: rgba(100, 116, 139, 0.3);
-            color: #1a1a1a;
+            color: #1a1a1a !important;
+            font-weight: 600;
         }
 
         .btn-secondary:hover:not(:disabled) {
@@ -564,10 +580,10 @@
     </div>
 
                 <div class="header">
+                <img src="/static/logo.png" alt="GlanceWatch Logo" style="height: 80px; margin-bottom: 1rem;">
                 <h1>
-                    <span class="icon">📊</span>
                     GlanceWatch
-                    <span class="version">v1.0.9</span>
+                    <span class="version">v1.0.10</span>
                 </h1>
             </div>
 
@@ -696,7 +712,7 @@
         </div>
 
                     <div class="footer">
-                <p>GlanceWatch v1.0.9 • System Monitoring Dashboard • 
+                <p>GlanceWatch v1.0.10 • System Monitoring Dashboard • 
                     <a href="/docs">Documentation</a> • 
                     <a href="/api">API Docs</a>
                 </p>

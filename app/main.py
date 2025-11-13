@@ -90,6 +90,7 @@ async def lifespan(app: FastAPI):
     # Mount UI at root
     ui_dir = Path(__file__).parent / "ui"
     if ui_dir.exists():
+        app.mount("/static", StaticFiles(directory=str(ui_dir)), name="static")
         app.mount("/ui", StaticFiles(directory=str(ui_dir), html=True), name="ui")
     else:
         logger.warning(f"UI directory not found: {ui_dir}")

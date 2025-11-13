@@ -5,6 +5,6 @@ include requirements-dev.txt
 include QUICKSTART.md
 include QUICKSTART-UBUNTU.md
 recursive-include ui *.html
-recursive-include app *.py *.html
+recursive-include app *.py *.html *.png
 global-exclude __pycache__
 global-exclude *.py[co]
