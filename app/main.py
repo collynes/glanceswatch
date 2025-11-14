@@ -10,7 +10,7 @@ from pathlib import Path
 
 import uvicorn
 from fastapi import FastAPI, Request, status
-from fastapi.responses import JSONResponse, FileResponse
+from fastapi.responses import JSONResponse, FileResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -150,10 +150,13 @@ async def handle_metric_error(request: Request, metric_name: str, error: Excepti
 
 @app.get("/", tags=["Info"])
 async def root():
-    """Root endpoint - serves the UI."""
+    """Root endpoint - serves the UI with dynamic version injection."""
     ui_file = Path(__file__).parent / "ui" / "index.html"
     if ui_file.exists():
-        return FileResponse(ui_file)
+        # Read HTML and inject version dynamically
+        html_content = ui_file.read_text()
+        html_content = html_content.replace("{{VERSION}}", __version__)
+        return HTMLResponse(content=html_content)
     return {
         "service": "GlanceWatch",
         "version": __version__,
