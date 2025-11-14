@@ -20,7 +20,7 @@
 ```bash
 $ glancewatch
 🚀 GlanceWatch v1.0.6 starting...
-📊 Dashboard: http://localhost:8000/
+ Dashboard: http://localhost:8000/
 
 # Clean! Silent operation - only errors shown if they occur
 ```
@@ -53,7 +53,7 @@ INFO:     85.255.20.137:23778 - "GET /status HTTP/1.1" 200 OK
 ### After v1.0.6 (Professional)
 ```
 🚀 GlanceWatch v1.0.6 starting...
-📊 Dashboard: http://localhost:8000/
+ Dashboard: http://localhost:8000/
 
 # Clean, silent operation ✨
 ```
@@ -183,7 +183,7 @@ sudo systemctl restart glancewatch
 After upgrade, you should see clean, professional output:
 ```
 🚀 GlanceWatch v1.0.6 starting...
-📊 Dashboard: http://localhost:8000/
+ Dashboard: http://localhost:8000/
 ```
 
 No more log spam! 🎉

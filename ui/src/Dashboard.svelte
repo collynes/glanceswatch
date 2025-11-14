@@ -78,7 +78,7 @@
     <!-- System Status -->
     <div class="card status-overview">
       <div class="status-header">
-        <h2>📊 System Status</h2>
+        <h2> System Status</h2>
         <div class="status-badge {status.ok ? 'status-ok' : 'status-critical'}">
           {status.ok ? '✓ Healthy' : '⚠ Alert'}
         </div>

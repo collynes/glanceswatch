@@ -128,7 +128,7 @@ curl -sSL https://your-repo/install-service.sh | bash
 # Now fully automated! 🎉
 ```
 
-## 📊 Testing Status
+##  Testing Status
 
 ✅ **Tested on:**
 - Ubuntu 20.04 LTS (systemd)

@@ -14,7 +14,7 @@ http://localhost:8100/ui
 
 ## Features
 
-### 📊 Real-Time Dashboard
+###  Real-Time Dashboard
 
 The dashboard displays three key metrics:
 

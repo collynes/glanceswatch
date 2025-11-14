@@ -9,7 +9,7 @@ When you close the terminal, GlanceWatch stops running. This guide shows you how
 
 ### One-Command Install
 ```bash
-curl -sSL https://raw.githubusercontent.com/collinsKemboi/glanceswatch/main/install-service.sh | bash
+curl -sSL https://raw.githubusercontent.com/collynes/glanceswatch/main/install-service.sh | bash
 ```
 
 This will:
@@ -206,7 +206,7 @@ tmux attach -t glancewatch
 
 ---
 
-## 📊 Comparison Table
+##  Comparison Table
 
 | Method | Auto-Start on Boot | Survives Logout | Easy to Manage | Logs |
 |--------|-------------------|-----------------|----------------|------|
@@ -222,7 +222,7 @@ tmux attach -t glancewatch
 ### Production Server (Ubuntu 18.209.250.77)
 ```bash
 # Use systemd service
-curl -sSL https://raw.githubusercontent.com/collinsKemboi/glanceswatch/main/install-service.sh | bash
+curl -sSL https://raw.githubusercontent.com/collynes/glanceswatch/main/install-service.sh | bash
 ```
 
 **Benefits:**
@@ -259,7 +259,7 @@ ssh ubuntu@18.209.250.77
 pip install glancewatch
 
 # Install as systemd service (recommended)
-curl -sSL https://raw.githubusercontent.com/collinsKemboi/glanceswatch/main/install-service.sh | bash
+curl -sSL https://raw.githubusercontent.com/collynes/glanceswatch/main/install-service.sh | bash
 
 # Or quick nohup method
 nohup glancewatch > /dev/null 2>&1 &

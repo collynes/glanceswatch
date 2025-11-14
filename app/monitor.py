@@ -223,11 +223,35 @@ class GlancesMonitor:
             error=error_msg
         )
     
+    async def get_system_info(self) -> Dict[str, Any]:
+        """Get additional system information (uptime, load, network)."""
+        info = {}
+        
+        # Get uptime
+        uptime_data = await self._fetch_glances_endpoint("uptime")
+        if uptime_data:
+            info['uptime'] = uptime_data
+        
+        # Get load average
+        load_data = await self._fetch_glances_endpoint("load")
+        if load_data:
+            info['load'] = load_data
+        
+        # Get network stats
+        network_data = await self._fetch_glances_endpoint("network")
+        if network_data:
+            info['network'] = network_data
+        
+        return info
+    
     async def test_connection(self) -> bool:
         """Test connection to Glances API."""
         try:
             data = await self._fetch_glances_endpoint("status")
             return data is not None
+        except Exception as e:
+            logger.error(f"Connection test failed: {e}")
+            return False
         except Exception as e:
             logger.error(f"Connection test failed: {e}")
             return False

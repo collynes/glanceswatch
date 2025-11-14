@@ -11,7 +11,7 @@ When you close the terminal, GlanceWatch stops running. Users need a way to run 
 
 #### 1. **One-Command Systemd Service Installer**
 ```bash
-curl -sSL https://raw.githubusercontent.com/collinsKemboi/glanceswatch/main/install-service.sh | bash
+curl -sSL https://raw.githubusercontent.com/collynes/glanceswatch/main/install-service.sh | bash
 ```
 
 Automatically:
@@ -48,7 +48,7 @@ Professional systemd service file that:
 
 **Recommended (Systemd):**
 ```bash
-curl -sSL https://raw.githubusercontent.com/collinsKemboi/glanceswatch/main/install-service.sh | bash
+curl -sSL https://raw.githubusercontent.com/collynes/glanceswatch/main/install-service.sh | bash
 ```
 
 **Quick (nohup):**
@@ -89,7 +89,7 @@ sudo journalctl -u glancewatch -f
 
 ---
 
-## 📊 Comparison of Methods
+##  Comparison of Methods
 
 | Method | Auto-Start on Boot | Survives Logout | Easy to Manage | Logs |
 |--------|-------------------|-----------------|----------------|------|
@@ -112,7 +112,7 @@ ssh ubuntu@18.209.250.77
 pip install --upgrade glancewatch
 
 # Install as systemd service (recommended)
-curl -sSL https://raw.githubusercontent.com/collinsKemboi/glanceswatch/main/install-service.sh | bash
+curl -sSL https://raw.githubusercontent.com/collynes/glanceswatch/main/install-service.sh | bash
 
 # Or use nohup method
 nohup glancewatch > /dev/null 2>&1 &
@@ -152,7 +152,7 @@ Now you can close your terminal and GlanceWatch will keep running! 🎉
 ### Production Server
 ```bash
 # Install as systemd service - runs forever
-curl -sSL https://raw.githubusercontent.com/collinsKemboi/glanceswatch/main/install-service.sh | bash
+curl -sSL https://raw.githubusercontent.com/collynes/glanceswatch/main/install-service.sh | bash
 ```
 
 ### Quick Testing

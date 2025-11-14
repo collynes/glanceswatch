@@ -180,7 +180,7 @@ curl http://localhost:8100/status
 - ✨ Interactive web UI with sliders
 - 💾 Changes persist automatically
 - 🚀 Instant application (no restart)
-- 📊 Real-time visual feedback
+-  Real-time visual feedback
 - 🎨 Modern, intuitive design
 - 📱 Mobile-friendly interface
 

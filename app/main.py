@@ -299,6 +299,25 @@ async def get_config():
     )
 
 
+@app.get("/system-info", tags=["Monitoring"])
+async def get_system_info():
+    """
+    Get additional system information (uptime, load average, network stats).
+    
+    Returns supplementary system metrics beyond CPU/RAM/Disk.
+    """
+    try:
+        async with GlancesMonitor(app_config) as monitor:
+            info = await monitor.get_system_info()
+            return JSONResponse(content=info)
+    except Exception as e:
+        logger.error(f"Error fetching system info: {e}")
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content={"error": str(e)}
+        )
+
+
 @app.get("/thresholds", response_model=dict, tags=["Configuration"])
 async def get_thresholds():
     """
@@ -457,11 +476,11 @@ def cli():
     
     # Clean, professional startup message
     if not args.quiet:
-        print(f"\n🚀 GlanceWatch v{__version__} starting...")
-        print(f"📊 Dashboard: http://{'localhost' if config.host == '0.0.0.0' else config.host}:{config.port}/")
+        print(f"\nGlanceWatch v{__version__} starting...")
+        print(f"Dashboard: http://{'localhost' if config.host == '0.0.0.0' else config.host}:{config.port}/")
         if args.verbose:
-            print(f"🔧 API Docs:  http://{'localhost' if config.host == '0.0.0.0' else config.host}:{config.port}/api")
-            print(f"🔗 Glances:   {config.glances_base_url}")
+            print(f"API Docs:  http://{'localhost' if config.host == '0.0.0.0' else config.host}:{config.port}/api")
+            print(f"Glances:   {config.glances_base_url}")
         print("")
     
     uvicorn.run(

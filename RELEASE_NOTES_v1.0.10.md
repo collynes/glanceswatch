@@ -25,7 +25,7 @@ Added official GlanceWatch logo to the dashboard for a more polished, profession
 ### Before (v1.0.9)
 ```html
 <h1>
-    <span class="icon">📊</span>
+    <span class="icon"></span>
     GlanceWatch
 </h1>
 ```
@@ -51,7 +51,9 @@ pip install --upgrade glancewatch
 ### Fresh Install
 ```bash
 # Automated installer (recommended)
-curl -sSL https://raw.githubusercontent.com/collinskramp/glanceswatch/main/install-service.sh | bash
+```bash
+curl -sSL https://raw.githubusercontent.com/collynes/glanceswatch/main/install-service.sh | bash
+```
 
 # Or just pip
 pip install glancewatch
@@ -73,7 +75,7 @@ pip install glancewatch
 
 None - this is a pure enhancement release
 
-## 📊 Technical Details
+##  Technical Details
 
 ### Files Modified
 - ✅ `app/ui/index.html` - Added logo, updated version to 1.0.10
@@ -147,7 +149,7 @@ Thanks to the community for feedback on UI improvements!
 ## 🔗 Links
 
 - **PyPI:** https://pypi.org/project/glancewatch/1.0.10/
-- **GitHub:** https://github.com/collinskramp/glanceswatch
+- **GitHub:** https://github.com/collynes/glanceswatch
 - **Documentation:** Included in dashboard at `/docs`
 
 ---

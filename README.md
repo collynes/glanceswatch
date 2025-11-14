@@ -1,35 +1,35 @@
-# GlanceWatch 🎯
+# GlanceWatch
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109+-green.svg)](https://fastapi.tiangolo.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PyPI version](https://badge.fury.io/py/glancewatch.svg)](https://pypi.org/project/glancewatch/)
-[![Tests](https://github.com/collinsKemboi/glancewatch/workflows/Tests/badge.svg)](https://github.com/collinsKemboi/glancewatch/actions)
-[![Coverage](https://img.shields.io/badge/coverage-78%25-brightgreen.svg)](https://github.com/collinsKemboi/glancewatch)
+[![Tests](https://github.com/collynes/glancewatch/workflows/Tests/badge.svg)](https://github.com/collynes/glancewatch/actions)
+[![Coverage](https://img.shields.io/badge/coverage-78%25-brightgreen.svg)](https://github.com/collynes/glancewatch)
 
 **GlanceWatch** is a lightweight monitoring adapter that bridges [Glances](https://nicolargo.github.io/glances/) system metrics with [Uptime Kuma](https://github.com/louislam/uptime-kuma) and other monitoring tools. It exposes simple HTTP endpoints with configurable thresholds that answer: *"Is my system healthy?"*
 
-## ✨ Features
+## Features
 
-- 🚀 **One-Command Install**: `pip install glancewatch` - everything included
-- 🔄 **Auto-Glances Management**: Automatically installs and starts Glances for you
-- 🎯 **HTTP Status Alerting**: Returns HTTP 200 (OK) or 503 (unhealthy) based on thresholds
-- 🎨 **Router-Style Web UI**: Clean admin interface at `/` (root)
-- ⚙️ **Configurable Thresholds**: Set custom limits for RAM, CPU, and disk usage
-- 💾 **Persistent Configuration**: Changes saved to config.yaml automatically
-- 📊 **Multiple Disk Monitoring**: Monitor all or specific mount points
-- 🏥 **Health Checks**: Built-in health endpoint for service monitoring
-- 📝 **OpenAPI Docs**: Auto-generated API documentation at `/api`
-- 📈 **Real-Time Metrics**: Auto-refreshing dashboard shows live system status
+- **One-Command Install**: `pip install glancewatch` - everything included
+- **Auto-Glances Management**: Automatically installs and starts Glances for you
+- **HTTP Status Alerting**: Returns HTTP 200 (OK) or 503 (unhealthy) based on thresholds
+- **Router-Style Web UI**: Clean admin interface at `/` (root)
+- **Configurable Thresholds**: Set custom limits for RAM, CPU, and disk usage
+- **Persistent Configuration**: Changes saved to config.yaml automatically
+- **Multiple Disk Monitoring**: Monitor all or specific mount points
+- **Health Checks**: Built-in health endpoint for service monitoring
+- **OpenAPI Docs**: Auto-generated API documentation at `/api`
+- **Real-Time Metrics**: Auto-refreshing dashboard shows live system status
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Option 1: Background Service (Recommended for Production)
 
 **Linux/Ubuntu (systemd):**
 ```bash
 # One-command install as background service
-curl -sSL https://raw.githubusercontent.com/collinsKemboi/glanceswatch/main/install-service.sh | bash
+curl -sSL https://raw.githubusercontent.com/collynes/glanceswatch/main/install-service.sh | bash
 
 # Service automatically starts on boot and runs in background
 ```
@@ -63,7 +63,7 @@ open http://localhost:8000
 
 **That's it!** 🎉 GlanceWatch automatically handles Glances installation and startup.
 
-## 🎯 Usage
+## Usage
 
 ```bash
 # Start GlanceWatch (auto-starts Glances)
@@ -99,7 +99,7 @@ glancewatch --host 0.0.0.0
 
 When any metric exceeds its threshold, GlanceWatch returns **HTTP 503**, triggering an alert.
 
-## ⚙️ Configuration
+## Configuration
 
 GlanceWatch creates `~/.config/glancewatch/config.yaml`:
 
@@ -186,7 +186,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 📧 Support
 
-- **Issues**: [GitHub Issues](https://github.com/collinsKemboi/glancewatch/issues)
+- **Issues**: [GitHub Issues](https://github.com/collynes/glancewatch/issues)
 - **PyPI**: [pypi.org/project/glancewatch](https://pypi.org/project/glancewatch/)
 
 ---

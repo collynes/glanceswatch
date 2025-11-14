@@ -74,7 +74,7 @@ Everything is now set up for PyPI publication. Here's what to do next:
      - 🎨 Web UI with real-time dashboard and threshold sliders
      - ⚙️ Configurable thresholds for RAM, CPU, and disk
      - 💾 Persistent configuration
-     - 📊 Multiple disk monitoring
+     -  Multiple disk monitoring
      - 🏥 Health check endpoints
      - 📝 OpenAPI documentation
      

@@ -12,7 +12,7 @@ By default, GlanceWatch runs with **minimal, professional logging**:
 $ glancewatch
 
 🚀 GlanceWatch v1.0.6 starting...
-📊 Dashboard: http://localhost:8000/
+ Dashboard: http://localhost:8000/
 
 # Clean! No spam!
 ```
@@ -51,7 +51,7 @@ $ glancewatch --verbose
 
 ✓ Glances is already running
 🚀 GlanceWatch v1.0.6 starting...
-📊 Dashboard: http://localhost:8000/
+ Dashboard: http://localhost:8000/
 🔧 API Docs:  http://localhost:8000/api
 🔗 Glances:   http://localhost:61208
 
@@ -68,7 +68,7 @@ For production servers, use the systemd service which automatically runs in quie
 
 ```bash
 # Install and enable service
-curl -sSL https://raw.githubusercontent.com/collinsKemboi/glanceswatch/main/install-service.sh | bash
+curl -sSL https://raw.githubusercontent.com/collynes/glanceswatch/main/install-service.sh | bash
 
 # View logs only when needed
 sudo journalctl -u glancewatch -f
@@ -133,7 +133,7 @@ INFO:     85.255.20.137:23778 - "GET /status HTTP/1.1" 200 OK
 ### ✅ New (Professional)
 ```
 🚀 GlanceWatch v1.0.6 starting...
-📊 Dashboard: http://localhost:8000/
+ Dashboard: http://localhost:8000/
 
 # Silent operation - only errors shown if they occur
 ```
@@ -142,5 +142,5 @@ INFO:     85.255.20.137:23778 - "GET /status HTTP/1.1" 200 OK
 
 ## Need Help?
 
-- **GitHub Issues:** https://github.com/collinsKemboi/glanceswatch/issues
-- **Documentation:** https://github.com/collinsKemboi/glanceswatch#readme
+- **GitHub Issues:** https://github.com/collynes/glanceswatch/issues
+- **Documentation:** https://github.com/collynes/glanceswatch#readme

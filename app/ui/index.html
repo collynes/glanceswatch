@@ -16,8 +16,9 @@
             background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             color: #ffffff;
             min-height: 100vh;
-            padding: 2rem;
+            padding: 1rem;
             transition: background 0.3s ease, color 0.3s ease;
+            overflow-y: auto;
         }
 
         /* Light             <div class="footer">
@@ -39,36 +40,36 @@
 
         .header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 1rem;
         }
 
         .header h1 {
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: #ffffff;
             text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
         }
 
         .header .version {
             color: rgba(255,255,255,0.8);
-            font-size: 1rem;
+            font-size: 0.875rem;
             font-weight: 500;
         }
 
         .theme-toggle {
             position: fixed;
-            top: 2rem;
-            right: 2rem;
+            top: 1rem;
+            right: 1rem;
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 50px;
-            padding: 0.5rem;
+            padding: 0.4rem;
             cursor: pointer;
             z-index: 1000;
             display: flex;
-            gap: 0.5rem;
+            gap: 0.4rem;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
         }
@@ -79,25 +80,30 @@
         }
 
         .theme-toggle-option {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+            font-size: 1rem;
             transition: all 0.3s ease;
             background: transparent;
         }
 
         .theme-toggle-option.active {
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            background: rgba(76, 175, 80, 0.3);
+            box-shadow: 0 2px 6px rgba(76, 175, 80, 0.4);
         }
 
         body.light-mode .theme-toggle {
             background: rgba(0, 0, 0, 0.05);
             border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode .theme-toggle-option.active {
+            background: rgba(76, 175, 80, 0.3);
+            box-shadow: 0 2px 6px rgba(76, 175, 80, 0.4);
         }
 
         body.light-mode .theme-toggle-option.active {
@@ -113,16 +119,16 @@
         /* Circular Metrics Cards */
         .metrics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .metric-card {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(5px);
-            border-radius: 20px;
-            padding: 2rem;
+            border-radius: 16px;
+            padding: 1rem;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
@@ -136,27 +142,27 @@
         }
 
         .metric-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
         }
 
         .metric-circle {
-            width: 140px;
-            height: 140px;
-            margin: 0 auto 1rem;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 0.75rem;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             background: rgba(255, 255, 255, 0.05);
-            border: 4px solid rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(16, 185, 129, 0.5);
             position: relative;
         }
 
         body.light-mode .metric-circle {
             background: rgba(0, 0, 0, 0.05);
-            border-color: rgba(0, 0, 0, 0.15);
+            border-color: rgba(16, 185, 129, 0.5);
         }
 
         body.light-mode .metric-label,
@@ -167,12 +173,14 @@
         }
 
         .metric-circle.ok {
-            border-color: #10b981;
-            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.6);
+            border-width: 2px;
+            background: rgba(16, 185, 129, 0.05);
         }
 
         .metric-circle.critical {
             border-color: #ef4444;
+            border-width: 2px;
             background: rgba(239, 68, 68, 0.1);
             animation: pulse 2s infinite;
         }
@@ -240,9 +248,9 @@
         .section-header {
             background: rgba(255, 255, 255, 0.03);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 1.25rem 1.5rem;
+            padding: 0.875rem 1rem;
             font-weight: 600;
-            font-size: 1.125rem;
+            font-size: 1rem;
             color: #ffffff;
         }
 
@@ -259,7 +267,7 @@
         }
 
         .section-body {
-            padding: 1.5rem;
+            padding: 1rem;
         }
 
         table {
@@ -269,7 +277,7 @@
 
         table th,
         table td {
-            padding: 1rem;
+            padding: 0.75rem;
             text-align: left;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -303,19 +311,151 @@
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.75rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
             font-weight: 600;
             color: #ffffff;
-            font-size: 0.9375rem;
+            font-size: 0.875rem;
+        }
+
+        .threshold-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .threshold-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.light-mode .threshold-item {
+            background: rgba(0, 0, 0, 0.03);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .threshold-item label {
+            margin-bottom: 0.5rem;
+            font-size: 0.8125rem;
         }
 
         body.light-mode .form-group label {
             color: #1a1a1a;
+        }
+
+        /* Status Cards - Uptime Kuma Style */
+        .status-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .status-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 0.875rem 1rem;
+            border-left: 4px solid #10b981;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-card:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .status-card.warning {
+            border-left-color: #f59e0b;
+        }
+
+        body.light-mode .status-card {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .status-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .status-card-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .status-card-icon {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .status-card-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+        }
+
+        .status-card-label {
+            font-weight: 600;
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .status-card-detail {
+            font-size: 0.75rem;
+            opacity: 0.6;
+        }
+
+        .status-card-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .status-card-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            line-height: 1;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.625rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .status-badge.ok {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+
+        .status-badge.warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+        }
+
+        body.light-mode .status-badge.ok {
+            background: rgba(16, 185, 129, 0.2);
+            color: #047857;
+        }
+
+        body.light-mode .status-badge.warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: #d97706;
         }
 
         body.light-mode table th,
@@ -350,16 +490,16 @@
         .slider-container {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.5rem;
             background: rgba(255, 255, 255, 0.05);
-            padding: 1rem;
-            border-radius: 12px;
+            padding: 0.5rem;
+            border-radius: 8px;
         }
 
         input[type="range"] {
             flex: 1;
-            height: 6px;
-            border-radius: 3px;
+            height: 4px;
+            border-radius: 2px;
             background: rgba(255, 255, 255, 0.15);
             outline: none;
             -webkit-appearance: none;
@@ -369,8 +509,8 @@
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             background: #ffffff;
             cursor: pointer;
@@ -393,17 +533,17 @@
         }
 
         .slider-value {
-            min-width: 60px;
+            min-width: 45px;
             text-align: right;
             font-weight: 700;
             color: #ffffff;
-            font-size: 1.125rem;
+            font-size: 0.9375rem;
         }
 
         .button-group {
             display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
         }
 
         button {
@@ -411,12 +551,12 @@
             background: rgba(255, 255, 255, 0.12);
             color: #ffffff;
             border: 2px solid rgba(255, 255, 255, 0.2);
-            padding: 0.875rem 1.5rem;
-            font-size: 1rem;
+            padding: 0.625rem 1rem;
+            font-size: 0.9375rem;
             font-weight: 600;
             cursor: pointer;
             font-family: inherit;
-            border-radius: 12px;
+            border-radius: 10px;
             transition: all 0.3s ease;
             backdrop-filter: blur(5px);
         }
@@ -627,49 +767,6 @@
             </div>
         </div>
 
-        <!-- System Status Section (Table View) -->
-        <div class="section">
-            <div class="section-header">Detailed System Status</div>
-            <div class="section-body">
-                <div id="statusLoading" class="loading">Loading system metrics...</div>
-                <div id="statusContent" style="display: none;">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Metric</th>
-                                <th>Current Value</th>
-                                <th>Threshold</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>RAM Usage</td>
-                                <td id="ramValue">--</td>
-                                <td id="ramThreshold">--</td>
-                                <td id="ramStatus">--</td>
-                            </tr>
-                            <tr>
-                                <td>CPU Usage</td>
-                                <td id="cpuValue">--</td>
-                                <td id="cpuThreshold">--</td>
-                                <td id="cpuStatus">--</td>
-                            </tr>
-                            <tr>
-                                <td>Disk Usage</td>
-                                <td id="diskValue">--</td>
-                                <td id="diskThreshold">--</td>
-                                <td id="diskStatus">--</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div style="margin-top: 1.5rem; color: rgba(255,255,255,0.7); font-size: 0.875rem;">
-                        Last updated: <span id="lastUpdate">--</span> • Auto-refresh: 5s
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Configuration Section -->
         <div class="section">
             <div class="section-header">Threshold Configuration</div>
@@ -679,42 +776,101 @@
                     <div id="successMessage" class="alert alert-success" style="display: none;"></div>
                     <div id="errorMessage" class="alert alert-error" style="display: none;"></div>
 
-                    <div class="form-group">
-                        <label for="ramSlider">RAM Threshold (%)</label>
-                        <div class="slider-container">
-                            <input type="range" id="ramSlider" min="10" max="100" value="80" step="1">
-                            <span class="slider-value" id="ramSliderValue">80%</span>
+                    <div class="threshold-grid">
+                        <div class="threshold-item">
+                            <label for="ramSlider">RAM (%)</label>
+                            <div class="slider-container">
+                                <input type="range" id="ramSlider" min="1" max="100" value="80" step="1">
+                                <span class="slider-value" id="ramSliderValue">80%</span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="cpuSlider">CPU Threshold (%)</label>
-                        <div class="slider-container">
-                            <input type="range" id="cpuSlider" min="10" max="100" value="80" step="1">
-                            <span class="slider-value" id="cpuSliderValue">80%</span>
+                        <div class="threshold-item">
+                            <label for="cpuSlider">CPU (%)</label>
+                            <div class="slider-container">
+                                <input type="range" id="cpuSlider" min="0.1" max="100" value="80" step="0.1">
+                                <span class="slider-value" id="cpuSliderValue">80%</span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="diskSlider">Disk Threshold (%)</label>
-                        <div class="slider-container">
-                            <input type="range" id="diskSlider" min="10" max="100" value="85" step="1">
-                            <span class="slider-value" id="diskSliderValue">85%</span>
+                        <div class="threshold-item">
+                            <label for="diskSlider">Disk (%)</label>
+                            <div class="slider-container">
+                                <input type="range" id="diskSlider" min="1" max="100" value="85" step="1">
+                                <span class="slider-value" id="diskSliderValue">85%</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="button-group">
                         <button id="saveButton" class="btn-success">Apply Changes</button>
-                        <button id="resetButton" class="btn-secondary">Reset</button>
+                        <button id="resetButton" class="btn-secondary">Reset to Defaults</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Status Section (Uptime Kuma Style) -->
+        <div class="section">
+            <div class="section-header">System Health Monitor</div>
+            <div class="section-body">
+                <div id="statusLoading" class="loading">Loading system metrics...</div>
+                <div id="statusContent" style="display: none;">
+                    <div class="status-cards">
+                        <div class="status-card">
+                            <div class="status-card-left">
+                                <div class="status-card-icon">⏱️</div>
+                                <div class="status-card-info">
+                                    <div class="status-card-label">System Uptime</div>
+                                    <div class="status-card-detail" id="uptimeDetail">Since boot</div>
+                                </div>
+                            </div>
+                            <div class="status-card-right">
+                                <div class="status-card-value" id="uptimeValue" style="font-size: 1.25rem;">--</div>
+                            </div>
+                        </div>
+
+                        <div class="status-card">
+                            <div class="status-card-left">
+                                <div class="status-card-icon">📈</div>
+                                <div class="status-card-info">
+                                    <div class="status-card-label">Load Average</div>
+                                    <div class="status-card-detail">1min / 5min / 15min</div>
+                                </div>
+                            </div>
+                            <div class="status-card-right">
+                                <div class="status-card-value" id="loadValue" style="font-size: 1.25rem;">--</div>
+                            </div>
+                        </div>
+
+                        <div class="status-card">
+                            <div class="status-card-left">
+                                <div class="status-card-icon">🌐</div>
+                                <div class="status-card-info">
+                                    <div class="status-card-label">Network Activity</div>
+                                    <div class="status-card-detail" id="networkDetail">Up / Down</div>
+                                </div>
+                            </div>
+                            <div class="status-card-right">
+                                <div class="status-card-value" id="networkValue" style="font-size: 1rem;">--</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 0.75rem; color: rgba(255,255,255,0.6); font-size: 0.75rem; text-align: center;">
+                        ⏱️ Last updated: <span id="lastUpdate">--</span> • Auto-refresh: 5s
                     </div>
                 </div>
             </div>
         </div>
 
                     <div class="footer">
-                <p>GlanceWatch v1.0.10 • System Monitoring Dashboard • 
+                <p>GlanceWatch v1.2.0 • System Monitoring Dashboard • 
                     <a href="/docs">Documentation</a> • 
                     <a href="/api">API Docs</a>
+                </p>
+                <p style="margin-top: 0.5rem; font-size: 0.875rem; opacity: 0.8;">
+                    Powered by <a href="https://github.com/nicolargo/glances" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">Glances</a> • 
+                    Works with <a href="https://github.com/louislam/uptime-kuma" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">Uptime Kuma</a>
                 </p>
             </div>
     </div>
@@ -809,24 +965,12 @@
                 document.getElementById('ramStatusBadge').className = 'metric-status ' + (data.ram.ok ? 'ok' : 'critical');
                 document.getElementById('ramCircle').className = 'metric-circle ' + (data.ram.ok ? 'ok' : 'critical');
                 
-                // Update RAM - Table
-                document.getElementById('ramValue').textContent = data.ram.value.toFixed(1) + '%';
-                document.getElementById('ramThreshold').textContent = data.ram.threshold + '%';
-                document.getElementById('ramStatus').textContent = data.ram.ok ? 'OK' : 'CRITICAL';
-                document.getElementById('ramStatus').className = data.ram.ok ? 'status-ok' : 'status-critical';
-                
                 // Update CPU - Circular
                 document.getElementById('cpuValueCircle').textContent = data.cpu.value.toFixed(1) + '%';
                 document.getElementById('cpuThresholdText').textContent = 'Threshold: ' + data.cpu.threshold + '%';
                 document.getElementById('cpuStatusBadge').textContent = data.cpu.ok ? 'OK' : 'CRITICAL';
                 document.getElementById('cpuStatusBadge').className = 'metric-status ' + (data.cpu.ok ? 'ok' : 'critical');
                 document.getElementById('cpuCircle').className = 'metric-circle ' + (data.cpu.ok ? 'ok' : 'critical');
-                
-                // Update CPU - Table
-                document.getElementById('cpuValue').textContent = data.cpu.value.toFixed(1) + '%';
-                document.getElementById('cpuThreshold').textContent = data.cpu.threshold + '%';
-                document.getElementById('cpuStatus').textContent = data.cpu.ok ? 'OK' : 'CRITICAL';
-                document.getElementById('cpuStatus').className = data.cpu.ok ? 'status-ok' : 'status-critical';
                 
                 // Update Disk - Circular
                 const diskValue = data.disk.disks.length > 0 ? data.disk.disks[0].percent_used.toFixed(1) + '%' : 'N/A';
@@ -836,11 +980,8 @@
                 document.getElementById('diskStatusBadge').className = 'metric-status ' + (data.disk.ok ? 'ok' : 'critical');
                 document.getElementById('diskCircle').className = 'metric-circle ' + (data.disk.ok ? 'ok' : 'critical');
                 
-                // Update Disk - Table
-                document.getElementById('diskValue').textContent = diskValue;
-                document.getElementById('diskThreshold').textContent = data.disk.threshold + '%';
-                document.getElementById('diskStatus').textContent = data.disk.ok ? 'OK' : 'CRITICAL';
-                document.getElementById('diskStatus').className = data.disk.ok ? 'status-ok' : 'status-critical';
+                // Load system info for bottom section
+                await loadSystemInfo();
                 
                 // Update timestamp
                 document.getElementById('lastUpdate').textContent = new Date(data.last_check).toLocaleString();
@@ -851,6 +992,52 @@
                 console.error('Metrics load error:', error);
                 document.getElementById('statusLoading').innerHTML = 
                     '<p style="color: rgba(255,255,255,0.9);">Failed to load metrics: ' + error.message + '</p>';
+            }
+        }
+
+        // Load system info (uptime, load, network)
+        async function loadSystemInfo() {
+            try {
+                const response = await fetch('/system-info');
+                if (!response.ok) return;
+                const data = await response.json();
+                
+                // Update Uptime - Glances returns it as a string like "23:37:59"
+                if (data.uptime) {
+                    document.getElementById('uptimeValue').textContent = data.uptime;
+                    document.getElementById('uptimeDetail').textContent = 'Since boot';
+                }
+                
+                // Update Load Average
+                if (data.load && data.load.min1 !== undefined) {
+                    document.getElementById('loadValue').textContent = 
+                        `${data.load.min1.toFixed(2)} / ${data.load.min5.toFixed(2)} / ${data.load.min15.toFixed(2)}`;
+                }
+                
+                // Update Network
+                if (data.network && data.network.length > 0) {
+                    // Sum all interfaces
+                    let totalRx = 0, totalTx = 0;
+                    data.network.forEach(iface => {
+                        if (iface.interface_name !== 'lo') { // Skip loopback
+                            totalRx += iface.bytes_recv || 0;
+                            totalTx += iface.bytes_sent || 0;
+                        }
+                    });
+                    
+                    const formatBytes = (bytes) => {
+                        if (bytes < 1024) return bytes + ' B';
+                        if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+                        if (bytes < 1073741824) return (bytes / 1048576).toFixed(1) + ' MB';
+                        return (bytes / 1073741824).toFixed(2) + ' GB';
+                    };
+                    
+                    document.getElementById('networkValue').textContent = 
+                        `↓ ${formatBytes(totalRx)} / ↑ ${formatBytes(totalTx)}`;
+                    document.getElementById('networkDetail').textContent = 'Total since boot';
+                }
+            } catch (error) {
+                console.error('System info load error:', error);
             }
         }
 
@@ -880,7 +1067,7 @@
         // Update button states
         function updateButtons() {
             document.getElementById('saveButton').disabled = !hasChanges;
-            document.getElementById('resetButton').disabled = !hasChanges;
+            // Reset button is always enabled so users can reset to defaults
         }
 
         // Save configuration
@@ -920,12 +1107,18 @@
             }
         }
 
-        // Reset configuration
+        // Reset configuration to defaults
         function resetConfig() {
-            currentConfig = { ...originalConfig };
-            document.getElementById('ramSlider').value = currentConfig.ram_percent;
-            document.getElementById('cpuSlider').value = currentConfig.cpu_percent;
-            document.getElementById('diskSlider').value = currentConfig.disk_percent;
+            // Reset to default values: RAM 80%, CPU 80%, Disk 85%
+            const defaults = {
+                ram_percent: 80,
+                cpu_percent: 80,
+                disk_percent: 85
+            };
+            currentConfig = { ...defaults };
+            document.getElementById('ramSlider').value = defaults.ram_percent;
+            document.getElementById('cpuSlider').value = defaults.cpu_percent;
+            document.getElementById('diskSlider').value = defaults.disk_percent;
             updateSliderValues();
             hideMessages();
         }
