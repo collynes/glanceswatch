@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>glancewatch</id>
+    <version>1.2.1</version>
+    <packageSourceUrl>https://github.com/collynes/glancewatch</packageSourceUrl>
+    <owners>collynes</owners>
+    <title>GlanceWatch</title>
+    <authors>Collins Kemboi</authors>
+    <projectUrl>https://github.com/collynes/glancewatch</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/collynes/glancewatch/main/app/ui/logo.png</iconUrl>
+    <licenseUrl>https://github.com/collynes/glancewatch/blob/main/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectSourceUrl>https://github.com/collynes/glancewatch</projectSourceUrl>
+    <docsUrl>https://github.com/collynes/glancewatch/tree/main/docs</docsUrl>
+    <bugTrackerUrl>https://github.com/collynes/glancewatch/issues</bugTrackerUrl>
+    <tags>glancewatch monitoring glances uptime-kuma api adapter python</tags>
+    <summary>Lightweight monitoring adapter for Glances + Uptime Kuma</summary>
+    <description>
+GlanceWatch is a lightweight monitoring adapter that connects Glances (system monitoring) with Uptime Kuma (alerting platform).
+
+Features:
+- Real-time system metrics (CPU, RAM, Disk)
+- Configurable thresholds
+- Web UI with live status
+- REST API for Uptime Kuma integration
+- Automatic service management
+- System health monitoring (uptime, load average, network stats)
+
+Requirements:
+- Python 3.8 or higher
+- Glances running on localhost:61208
+    </description>
+    <releaseNotes>https://github.com/collynes/glancewatch/blob/main/docs/RELEASE_NOTES_v1.2.1.md</releaseNotes>
+    <dependencies>
+      <dependency id="python3" version="3.8" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>

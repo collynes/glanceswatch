@@ -1,0 +1,15 @@
+# Development files
+*.log
+*.pyc
+__pycache__/
+.DS_Store
+.env
+
+# Test files
+test/
+tests/
+*.test.js
+
+# Build artifacts
+dist/
+build/

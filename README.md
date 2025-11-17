@@ -22,23 +22,51 @@
 - **OpenAPI Docs**: Auto-generated API documentation at `/api`
 - **Real-Time Metrics**: Auto-refreshing dashboard shows live system status
 
+## Installation
+
+### macOS (Homebrew)
+```bash
+brew tap collynes/glancewatch
+brew install glancewatch
+glancewatch
+```
+
+### Windows (Chocolatey)
+```powershell
+choco install glancewatch
+glancewatch
+```
+
+### Node.js/npm (All platforms)
+```bash
+# Global installation
+npm install -g glancewatch
+glancewatch
+
+# Or use npx
+npx glancewatch
+```
+
+### Python/pip (All platforms)
+```bash
+pip install glancewatch
+glancewatch
+```
+
 ## Quick Start
 
-### Option 1: Background Service (Recommended for Production)
+### Background Service (Recommended for Production)
 
 **Linux/Ubuntu (systemd):**
 ```bash
 # One-command install as background service
-curl -sSL https://raw.githubusercontent.com/collynes/glanceswatch/main/install-service.sh | bash
+curl -sSL https://raw.githubusercontent.com/collynes/glancewatch/main/scripts/install-pip.sh | bash
 
 # Service automatically starts on boot and runs in background
 ```
 
 **Simple background start (nohup):**
 ```bash
-# Install
-pip install glancewatch
-
 # Start in background
 nohup glancewatch > /dev/null 2>&1 &
 
@@ -46,19 +74,16 @@ nohup glancewatch > /dev/null 2>&1 &
 ps aux | grep glancewatch
 ```
 
-See [BACKGROUND-SERVICE.md](BACKGROUND-SERVICE.md) for complete guide including screen/tmux options.
+See [docs/BACKGROUND-SERVICE.md](docs/BACKGROUND-SERVICE.md) for complete guide including screen/tmux options.
 
-### Option 2: Foreground (Development)
+### Foreground (Development)
 
 ```bash
-# Install GlanceWatch (automatically installs Glances dependency)
-pip install glancewatch
-
 # Run GlanceWatch (auto-starts Glances if needed)
 glancewatch
 
 # Access the web UI
-open http://localhost:8000
+open http://localhost:8765
 ```
 
 **That's it!** 🎉 GlanceWatch automatically handles Glances installation and startup.
@@ -79,6 +104,16 @@ glancewatch --port 9000
 glancewatch --host 0.0.0.0
 ```
 
+## 📚 Documentation
+
+- [Installation Guide](docs/INSTALL.md) - Detailed installation instructions
+- [Quick Start Guide](docs/QUICKSTART.md) - Get started in minutes
+- [Ubuntu Quick Start](docs/QUICKSTART-UBUNTU.md) - Ubuntu-specific guide
+- [Background Service Setup](docs/BACKGROUND-SERVICE.md) - Run as a service
+- [UI Guide](docs/UI-GUIDE.md) - Web interface overview
+- [Pip Installation](docs/PIP-INSTALL.md) - Python package details
+- [Release Notes](docs/) - All version history
+
 ## 📡 API Endpoints
 
 - `GET /` - Web UI (root endpoint)
@@ -89,12 +124,12 @@ glancewatch --host 0.0.0.0
 - `GET /health` - Service health check
 - `GET /config` - Get configuration
 - `PUT /config` - Update thresholds
-- `GET /api` - Interactive API documentation
+- `GET /docs` - Interactive API documentation
 
 ## 🔔 Uptime Kuma Integration
 
 1. In Uptime Kuma, create a new **HTTP(s)** monitor
-2. Set URL to: `http://your-server:8000/status`
+2. Set URL to: `http://your-server:8765/status`
 3. Set "Accepted Status Codes" to: `200`
 
 When any metric exceeds its threshold, GlanceWatch returns **HTTP 503**, triggering an alert.
@@ -106,7 +141,7 @@ GlanceWatch creates `~/.config/glancewatch/config.yaml`:
 ```yaml
 glances_base_url: "http://localhost:61208/api/4"
 host: "0.0.0.0"
-port: 8000
+port: 8765
 log_level: "INFO"
 return_http_on_failure: 503
 
@@ -161,24 +196,20 @@ Every push and pull request automatically runs:
 - ✅ Coverage checks (minimum 75%)
 - ✅ Package build verification
 
-See [TEST_SUMMARY.md](TEST_SUMMARY.md) for detailed test documentation.
+See [docs/TEST_SUMMARY.md](docs/TEST_SUMMARY.md) for detailed test documentation.
 
-## 🆕 What's New in v1.0.2
+## 🆕 What's New in v1.2.1
 
-- ✅ **Fixed critical bug**: DateTime serialization in error responses
-- ✅ **New endpoint**: `/thresholds` for easier threshold management
-- ✅ **Comprehensive tests**: 63+ test cases covering all functionality
-- ✅ **CI/CD pipeline**: Automated testing on every commit
-- ✅ **78% code coverage**: Major quality improvement
-- ✅ Bug fixes from v1.0.1 (missing import uvicorn)
+- ✅ **Dynamic Version Display**: Fixed version display bug - now shows correct version in UI
+- ✅ **Template-based Version**: Uses {{VERSION}} placeholder replaced at runtime
+- ✅ **Improved UI**: Green/red circle status indicators with thin borders
+- ✅ **System Health Monitor**: Added uptime, load average, and network statistics
+- ✅ **Better Thresholds**: CPU now supports 0.1% minimum threshold
+- ✅ **Reset Defaults**: Reset button always enabled with proper default values (80/80/85)
+- ✅ **Clean Documentation**: Removed all unsolicited emojis from docs
+- ✅ **Section Reordering**: Moved threshold configuration before system health
 
-## 🆕 What's New in v1.0.1
-
-- ✅ **Auto-Glances Management**: Glances is now auto-installed and auto-started
-- ✅ **New CLI Flag**: `--ignore-glances` to skip automatic Glances management
-- ✅ **Route Reorganization**: API docs moved from `/docs` to `/api`, UI now at root `/`
-- ✅ **UI Redesign**: Clean router-style admin interface with plain colors
-- ✅ **Improved UX**: Single command to install and run everything
+See [docs/RELEASE_NOTES_v1.2.1.md](docs/RELEASE_NOTES_v1.2.1.md) for complete release notes.
 
 ## 📄 License
 

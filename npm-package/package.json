@@ -1,0 +1,39 @@
+{
+  "name": "glancewatch",
+  "version": "1.2.1",
+  "description": "Lightweight monitoring adapter for Glances + Uptime Kuma",
+  "main": "index.js",
+  "bin": {
+    "glancewatch": "./bin/glancewatch.js"
+  },
+  "scripts": {
+    "postinstall": "node postinstall.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/collynes/glancewatch.git"
+  },
+  "keywords": [
+    "glancewatch",
+    "monitoring",
+    "glances",
+    "uptime-kuma",
+    "system-monitoring",
+    "api",
+    "adapter"
+  ],
+  "author": "Collins Kemboi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/collynes/glancewatch/issues"
+  },
+  "homepage": "https://github.com/collynes/glancewatch#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ]
+}
