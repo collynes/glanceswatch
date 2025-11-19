@@ -46,7 +46,7 @@ class GlancesMonitor:
             logger.debug(f"Fetching Glances endpoint: {url}")
             response = await self.client.get(url)
             response.raise_for_status()
-            data = response.json()
+            data = await response.json()
             logger.debug(f"Received data from {endpoint}: {data}")
             return data
         except httpx.HTTPStatusError as e:
@@ -57,7 +57,7 @@ class GlancesMonitor:
                     logger.debug(f"Retrying with API v4: {url}")
                     response = await self.client.get(url)
                     response.raise_for_status()
-                    data = response.json()
+                    data = await response.json()
                     logger.debug(f"Received data from {endpoint} (v4): {data}")
                     return data
                 except Exception:

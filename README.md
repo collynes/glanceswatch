@@ -79,11 +79,14 @@ See [docs/BACKGROUND-SERVICE.md](docs/BACKGROUND-SERVICE.md) for complete guide 
 ### Foreground (Development)
 
 ```bash
-# Run GlanceWatch (auto-starts Glances if needed)
+pip install glancewatch
 glancewatch
 
-# Access the web UI
-open http://localhost:8765
+# Or run with custom port
+glancewatch --port 8080
+
+# Access the dashboard
+open http://localhost:8000
 ```
 
 **That's it!** 🎉 GlanceWatch automatically handles Glances installation and startup.
@@ -129,7 +132,7 @@ glancewatch --host 0.0.0.0
 ## 🔔 Uptime Kuma Integration
 
 1. In Uptime Kuma, create a new **HTTP(s)** monitor
-2. Set URL to: `http://your-server:8765/status`
+2. Set URL to: `http://your-server:8000/status`
 3. Set "Accepted Status Codes" to: `200`
 
 When any metric exceeds its threshold, GlanceWatch returns **HTTP 503**, triggering an alert.
@@ -141,7 +144,7 @@ GlanceWatch creates `~/.config/glancewatch/config.yaml`:
 ```yaml
 glances_base_url: "http://localhost:61208/api/4"
 host: "0.0.0.0"
-port: 8765
+port: 8000
 log_level: "INFO"
 return_http_on_failure: 503
 
@@ -211,64 +214,6 @@ See [docs/TEST_SUMMARY.md](docs/TEST_SUMMARY.md) for detailed test documentation
 
 See [docs/RELEASE_NOTES_v1.2.1.md](docs/RELEASE_NOTES_v1.2.1.md) for complete release notes.
 
-## 🤝 Contributing
-
-We welcome contributions! GlanceWatch is an open-source project and we'd love your help making it better.
-
-### How to Contribute
-
-1. **Fork the repository** on GitHub
-2. **Clone your fork** locally
-3. **Create a feature branch** from `develop`
-4. **Make your changes** following our coding standards
-5. **Write/update tests** for your changes
-6. **Submit a pull request** to the `develop` branch
-
-### Quick Start for Contributors
-
-```bash
-# Fork on GitHub first, then:
-git clone https://github.com/YOUR_USERNAME/glanceswatch.git
-cd glanceswatch
-
-# Create a feature branch
-git checkout -b feature/your-feature-name
-
-# Install development dependencies
-pip install -e ".[dev]"
-
-# Make changes, then test
-pytest --cov=app
-black app/ tests/
-ruff check app/ tests/
-
-# Commit and push
-git commit -m "feat: add your feature"
-git push origin feature/your-feature-name
-
-# Create a Pull Request on GitHub targeting 'develop' branch
-```
-
-### Branch Strategy
-
-- **`main`** - Production releases (protected)
-- **`develop`** - Integration branch (protected, default for PRs)
-- **`feature/*`** - Your feature branches
-
-### Resources
-
-- 📖 **[Contributing Guide](CONTRIBUTING.md)** - Detailed contribution guidelines
-- 🛡️ **[Branch Protection Setup](docs/BRANCH_PROTECTION_GUIDE.md)** - How we protect code quality
-- 📝 **[Pull Request Template](.github/PULL_REQUEST_TEMPLATE.md)** - What to include in PRs
-- 🐛 **[Bug Report Template](.github/ISSUE_TEMPLATE/bug_report.md)** - Report bugs
-- ✨ **[Feature Request Template](.github/ISSUE_TEMPLATE/feature_request.md)** - Suggest features
-
-### Code of Conduct
-
-- Be respectful and inclusive
-- Provide constructive feedback
-- Focus on what's best for the community
-
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) file for details.
@@ -276,9 +221,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ## 📧 Support
 
 - **Issues**: [GitHub Issues](https://github.com/collynes/glancewatch/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/collynes/glancewatch/discussions)
 - **PyPI**: [pypi.org/project/glancewatch](https://pypi.org/project/glancewatch/)
-- **npm**: [npmjs.com/package/glancewatch](https://www.npmjs.com/package/glancewatch)
 
 ---
 

@@ -37,8 +37,8 @@ glancewatch
 ```
 
 3. Open your browser to:
-   - **Web UI**: http://localhost:8765
-   - **API Docs**: http://localhost:8765/docs
+   - **Web UI**: http://localhost:8000
+   - **API Docs**: http://localhost:8000/docs
 
 ## Features
 

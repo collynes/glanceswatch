@@ -153,8 +153,8 @@ async def root():
     """Root endpoint - serves the UI with dynamic version injection."""
     ui_file = Path(__file__).parent / "ui" / "index.html"
     if ui_file.exists():
-        # Read HTML with explicit UTF-8 encoding (fixes Windows cp1252 issue)
-        html_content = ui_file.read_text(encoding="utf-8")
+        # Read HTML and inject version dynamically
+        html_content = ui_file.read_text()
         html_content = html_content.replace("{{VERSION}}", __version__)
         return HTMLResponse(content=html_content)
     return {

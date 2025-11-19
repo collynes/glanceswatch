@@ -89,21 +89,21 @@ Users can now install GlanceWatch using their preferred package manager:
 ```bash
 brew install glancewatch
 glancewatch
-# Open http://localhost:8765
+# Open http://localhost:8000
 ```
 
 ### Node.js (npm):
 ```bash
 npm install -g glancewatch
 glancewatch
-# Open http://localhost:8765
+# Open http://localhost:8000
 ```
 
 ### Python (pip):
 ```bash
 pip install glancewatch
 glancewatch
-# Open http://localhost:8765
+# Open http://localhost:8000
 ```
 
 ## Version Management

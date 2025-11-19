@@ -67,8 +67,8 @@ brew install glancewatch
 # Start GlanceWatch
 glancewatch
 
-# Web UI: http://localhost:8765
-# API Docs: http://localhost:8765/docs
+# Web UI: http://localhost:8000
+# API Docs: http://localhost:8000/docs
 ```
 
 ## Run as a Service

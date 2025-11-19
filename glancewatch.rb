@@ -3,8 +3,8 @@ class Glancewatch < Formula
 
   desc "Lightweight monitoring adapter for Glances + Uptime Kuma"
   homepage "https://github.com/collynes/glancewatch"
-  url "https://files.pythonhosted.org/packages/source/g/glancewatch/glancewatch-1.2.2.tar.gz"
-  sha256 "24b47a549adfb8c94a08042d1070a2a7dfe946d337a8814b2e8622ace9d03a9e"
+  url "https://files.pythonhosted.org/packages/source/g/glancewatch/glancewatch-1.2.1.tar.gz"
+  sha256 "f80bfb94969ab0428a5b60ecdc1a7c097336d38db91cd40cbc6f7dfee3186ec3"
   license "MIT"
 
   depends_on "python@3.12"
@@ -13,7 +13,7 @@ class Glancewatch < Formula
     # Install glancewatch and all dependencies via pip (uses pre-built wheels)
     system "python3.12", "-m", "venv", libexec
     system libexec/"bin/pip", "install", "--upgrade", "pip"
-    system libexec/"bin/pip", "install", "glancewatch==1.2.2"
+    system libexec/"bin/pip", "install", "glancewatch==1.2.1"
     
     # Create wrapper script
     bin.install_symlink libexec/"bin/glancewatch"
