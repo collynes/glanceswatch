@@ -4,7 +4,7 @@ class Glancewatch < Formula
   desc "Lightweight monitoring adapter for Glances + Uptime Kuma"
   homepage "https://github.com/collynes/glancewatch"
   url "https://files.pythonhosted.org/packages/source/g/glancewatch/glancewatch-1.2.3.tar.gz"
-  sha256 "TBD_AFTER_PYPI_UPLOAD"
+  sha256 "8b617b817a2df5ef846c438f6c2dafd622b1768a7e740b3665986d124f04423c"
   license "MIT"
 
   depends_on "python@3.12"
